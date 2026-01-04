@@ -102,10 +102,10 @@ if ($this->session->userdata('admin_id')) {
       <i class="bi bi-whatsapp fs-5"></i> Chat on WhatsApp
     </a>
 
-    <button class="d-flex align-items-center gap-3 px-3 py-3 border-bottom text-decoration-none"
+    <a type="button" class="d-flex align-items-center gap-3 px-3 py-3 border-bottom text-decoration-none"
       onclick="forceUpdateApp()">
       <i class="bi bi-arrow-clockwise fs-5"></i> Update Version
-      </button>
+    </a>
 
     <a target="_blank" href="https://itimium.com.pk/"
       class="d-flex align-items-center gap-3 px-3 py-3 text-decoration-none">

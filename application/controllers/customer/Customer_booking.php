@@ -84,11 +84,11 @@ class Customer_booking extends CI_Controller
   public function view($booking_id)
   {
     $cid = (int)$this->session->userdata('customer_id');
-    $b = $this->cargo->get_booking($booking_id);
-    if (!$b || (int)$b['customer_id'] !== $cid) show_404();
 
-    $data['booking'] = $b;
-    $data['logs'] = $this->cargo->status_logs($booking_id);
+    $booking = $this->cargo->get_by_id_and_customer($booking_id, $cid);
+    if(!$booking) show_404();
+
+    $data['booking'] = $booking;
     $this->load->view('customer/booking_view', $data);
   }
 }

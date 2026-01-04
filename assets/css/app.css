@@ -97,9 +97,9 @@ h5 {
 }
 
 .btn-outline-primary {
-  background: var(--white);
-  border-color: var(--black);
-  color: var(--black);
+  background: var(--orange);
+  /* border-color: var(--black); */
+  color: var(--white);
 }
 
 .btn-outline-primary:hover {

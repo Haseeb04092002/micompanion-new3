@@ -12,8 +12,8 @@ if ($this->session->userdata('admin_id')) {
 ?>
 
 <div class="bg-primary border-bottom sticky-top">
-  <div class="container py-1">
-    <div class="text-center fw-bold"
+  <div class="container p-0">
+    <div class="text-center text-secondary fw-bold"
          style="color:var(--orange); font-size:14px;">
       <?= $role_label ?>
     </div>
@@ -22,7 +22,7 @@ if ($this->session->userdata('admin_id')) {
 
 
 <!-- TOP APP BAR -->
-<div class="p-3 bg-white border-bottom sticky-top">
+<div class="px-3 py-2 bg-white border-bottom sticky-top">
   <div class="position-relative d-flex align-items-center">
 
     <!-- LEFT: MENU BUTTON + LOGO -->

@@ -26,14 +26,18 @@ class Cargo_model extends CI_Model
     return $this->db
       ->select("
             b.*,
+
+            /* Customer */
             cu.name AS customer_name,
             cp.phone AS customer_phone,
             cp.cnic_no AS customer_cnic,
 
+            /* Driver */
             du.name AS driver_name,
             dp.phone AS driver_phone,
             dp.license_no AS driver_license_no,
 
+            /* Vehicle (by driver_id) */
             v.category AS vehicle_category,
             v.name AS vehicle_name,
             v.model AS vehicle_model,
@@ -42,21 +46,26 @@ class Cargo_model extends CI_Model
         ", false)
       ->from('cargo_bookings b')
 
-      // CUSTOMER (users + customer_profiles)
-      ->join('users cu', 'cu.user_id = b.customer_id AND cu.is_deleted=0', 'left')
+      /* CUSTOMER */
+      ->join('users cu', 'cu.user_id = b.customer_id AND cu.is_deleted = 0', 'left')
       ->join('customer_profiles cp', 'cp.user_id = b.customer_id', 'left')
 
-      // DRIVER (users + driver_profiles) - may be null before assignment
-      ->join('users du', 'du.user_id = b.driver_id AND du.is_deleted=0', 'left')
+      /* DRIVER */
+      ->join('users du', 'du.user_id = b.driver_id AND du.is_deleted = 0', 'left')
       ->join('driver_profiles dp', 'dp.user_id = b.driver_id', 'left')
 
-      // VEHICLE - may be null before assignment
-      ->join('driver_vehicles v', 'v.vehicle_id = b.vehicle_id AND v.is_deleted=0', 'left')
+      /* VEHICLE (driver based, approved only) */
+      ->join(
+        'driver_vehicles v',
+        'v.driver_id = b.driver_id AND v.status = "approved" AND v.is_deleted = 0',
+        'left'
+      )
 
       ->where('b.booking_id', $booking_id)
       ->get()
       ->row_array();
   }
+
 
 
 

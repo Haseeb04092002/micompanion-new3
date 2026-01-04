@@ -1,5 +1,40 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+if ('serviceWorker' in navigator) {
+
+  navigator.serviceWorker.register('/service-worker.js');
+
+  // 🔁 Check for updates every 5 seconds
+  setInterval(() => {
+    navigator.serviceWorker.getRegistration().then(reg => {
+      if (reg) reg.update();
+    });
+  }, 5000);
+
+  // 🔔 When new SW is ready
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    console.log('New version activated');
+    window.location.reload();
+  });
+}
+function forceUpdateApp() {
+  if (!('serviceWorker' in navigator)) return;
+
+  navigator.serviceWorker.getRegistration().then(reg => {
+    if (reg && reg.waiting) {
+      reg.waiting.postMessage('SKIP_WAITING');
+    }
+
+    caches.keys().then(keys => {
+      Promise.all(keys.map(k => caches.delete(k))).then(() => {
+        window.location.reload(true);
+      });
+    });
+  });
+}
+</script>
+
+<script>
 (function () {
   const loader = document.getElementById('pageLoader');
 

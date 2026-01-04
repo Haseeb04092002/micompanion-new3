@@ -22,4 +22,8 @@ class Welcome extends CI_Controller {
     // No login → show role selection page
     $this->load->view('welcome');
   }
+  public function about()
+  {
+    $this->load->view('admin/about');
+  }
 }

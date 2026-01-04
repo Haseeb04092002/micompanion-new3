@@ -53,7 +53,7 @@
       </a>
     </div>
 
-    <div class="card card-soft p-3 mb-3">
+    <div class="d-none card card-soft p-3 mb-3">
       <h5 style="color:var(--orange)">Driver Reports</h5>
 
       <a class="d-block py-2 border-bottom text-decoration-none"
@@ -67,7 +67,7 @@
       </a>
     </div>
 
-    <div class="card card-soft p-3 mb-3">
+    <div class="d-none card card-soft p-3 mb-3">
       <h5 style="color:var(--orange)">Customer Reports</h5>
 
       <a class="d-block py-2 border-bottom text-decoration-none"
@@ -81,7 +81,7 @@
       </a>
     </div>
 
-    <div class="card card-soft p-3">
+    <div class="d-none card card-soft p-3">
       <h5 style="color:var(--orange)">System Reports</h5>
 
       <a class="d-block py-2 border-bottom text-decoration-none"

@@ -38,46 +38,6 @@
   </div>
 </div>
 
-<!-- TOP APP BAR -->
-<div class="p-3 bg-white border-bottom sticky-top">
-  <div class="position-relative d-flex align-items-center">
-
-    <!-- LEFT: MENU BUTTON + LOGO -->
-    <div class="d-flex align-items-center gap-2">
-      <!-- Offcanvas Toggle -->
-      <button class="btn btn-sm btn-outline-dark"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#appMenu"
-        aria-controls="appMenu">
-        <i class="bi bi-list"></i>
-      </button>
-
-      <!-- Logo -->
-      <img src="<?= base_url('assets/icons/icon-192x192.png') ?>"
-        alt="MiCompanion"
-        style="height:32px;width:auto;">
-    </div>
-
-    <!-- CENTER: PAGE TITLE -->
-    <div class="position-absolute start-50 translate-middle-x fw-bold"
-      style="color:var(--orange);">
-      <?= isset($page_title) ? $page_title : 'Dashboard' ?>
-    </div>
-
-    <!-- RIGHT: LOGOUT -->
-    <div class="ms-auto">
-      <?php if (isset($logout_url)): ?>
-        <a class="btn btn-sm btn-outline-dark"
-          href="<?= site_url($logout_url) ?>">
-          Logout
-        </a>
-      <?php endif; ?>
-    </div>
-
-  </div>
-</div>
-
 <!-- OFFCANVAS MENU -->
 <div class="offcanvas offcanvas-start"
   tabindex="-1"

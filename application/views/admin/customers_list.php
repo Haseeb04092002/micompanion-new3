@@ -11,7 +11,7 @@ include(APPPATH . 'views/_partials/topbar.php'); ?>
     <div class="card card-soft p-3 mb-2 rowItem">
       <div class="fw-bold"><?= $r['name'] ?></div>
       <div class="small text-muted"><?= $r['email'] ?> | <?= $r['status'] ?></div>
-      <div class="mt-2 d-flex">
+      <div class="mt-2 d-flex gap-2">
         <a class="btn btn-success btn-sm" href="<?= site_url('admin/admin_customers/approve/' . $r['user_id']) ?>">Approve</a>
         <a class="btn btn-warning btn-sm" href="<?= site_url('admin/admin_customers/reject/' . $r['user_id']) ?>">Reject</a>
         <a class="btn btn-danger btn-sm" href="<?= site_url('admin/admin_customers/suspend/' . $r['user_id']) ?>">Suspend</a>

@@ -10,25 +10,25 @@
       <div class="col-6">
         <div class="card card-soft p-3 text-center">
           <div class="small text-muted">Total Bookings</div>
-          <div class="fw-bold fs-5"><?= (int)$summary['total_bookings'] ?></div>
+          <div class="fw-bold fs-5"><?= (int)$summary['total_bookings']??'0' ?></div>
         </div>
       </div>
       <div class="col-6">
         <div class="card card-soft p-3 text-center">
           <div class="small text-muted">Completed</div>
-          <div class="fw-bold fs-5"><?= (int)$summary['completed'] ?></div>
+          <div class="fw-bold fs-5"><?= (int)$summary['completed']??'0' ?></div>
         </div>
       </div>
       <div class="col-6">
         <div class="card card-soft p-3 text-center">
           <div class="small text-muted">Active Drivers</div>
-          <div class="fw-bold fs-5"><?= (int)$summary['active_drivers'] ?></div>
+          <div class="fw-bold fs-5"><?= (int)$summary['active_drivers']??'0' ?></div>
         </div>
       </div>
       <div class="col-6">
         <div class="card card-soft p-3 text-center">
           <div class="small text-muted">Customers</div>
-          <div class="fw-bold fs-5"><?= (int)$summary['customers'] ?></div>
+          <div class="fw-bold fs-5"><?= (int)$summary['customers']??'0' ?></div>
         </div>
       </div>
     </div>

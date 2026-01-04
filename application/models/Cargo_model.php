@@ -21,19 +21,43 @@ class Cargo_model extends CI_Model
 
   public function get_full_by_id($booking_id)
   {
+    $booking_id = (int)$booking_id;
+
     return $this->db
-      ->select('b.*,
-              c.name AS customer_name, c.phone AS customer_phone,
-              d.name AS driver_name, d.phone AS driver_phone,
-              v.name AS vehicle_name')
+      ->select("
+            b.*,
+            cu.name AS customer_name,
+            cp.phone AS customer_phone,
+            cp.cnic_no AS customer_cnic,
+
+            du.name AS driver_name,
+            dp.phone AS driver_phone,
+            dp.license_no AS driver_license_no,
+
+            v.category AS vehicle_category,
+            v.name AS vehicle_name,
+            v.model AS vehicle_model,
+            v.front_img AS vehicle_front_img,
+            v.back_img AS vehicle_back_img
+        ", false)
       ->from('cargo_bookings b')
-      ->join('customer_profiles c', 'c.customer_id=b.customer_id')
-      ->join('driver_profiles d', 'd.driver_id=b.driver_id', 'left')
-      ->join('driver_vehicles v', 'v.vehicle_id=b.vehicle_id', 'left')
-      ->where('b.booking_id', (int)$booking_id)
+
+      // CUSTOMER (users + customer_profiles)
+      ->join('users cu', 'cu.user_id = b.customer_id AND cu.is_deleted=0', 'left')
+      ->join('customer_profiles cp', 'cp.user_id = b.customer_id', 'left')
+
+      // DRIVER (users + driver_profiles) - may be null before assignment
+      ->join('users du', 'du.user_id = b.driver_id AND du.is_deleted=0', 'left')
+      ->join('driver_profiles dp', 'dp.user_id = b.driver_id', 'left')
+
+      // VEHICLE - may be null before assignment
+      ->join('driver_vehicles v', 'v.vehicle_id = b.vehicle_id AND v.is_deleted=0', 'left')
+
+      ->where('b.booking_id', $booking_id)
       ->get()
       ->row_array();
   }
+
 
 
   public function get_by_id_and_customer($booking_id, $customer_id)

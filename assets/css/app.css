@@ -175,6 +175,10 @@ label {
   font-size: 13px;
 }
 
+.bg-secondary{
+  background: var(--secondary) !important;
+}
+
 .alert-success { background:#e7f5ec; color:#0f5132; }
 .alert-danger  { background:#fdecea; color:#842029; }
 .alert-warning { background:#fff4d6; color:#664d03; }

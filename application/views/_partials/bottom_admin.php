@@ -1,6 +1,6 @@
 
 
-<div class="bottom-bar d-flex">
+<div class="bottom-bar d-flex bg-secondary">
 
   <a href="<?= site_url('admin/admin_dashboard') ?>" class="text-light">
     <i class="bi bi-speedometer2"></i>

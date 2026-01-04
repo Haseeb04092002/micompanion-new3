@@ -51,7 +51,7 @@ class Cargo_model extends CI_Model
       ->join('driver_profiles dp', 'dp.user_id = b.driver_id', 'left')
 
       // VEHICLE - may be null before assignment
-      // ->join('driver_vehicles v', 'v.vehicle_id = b.vehicle_id AND v.is_deleted=0', 'left')
+      ->join('driver_vehicles v', 'v.vehicle_id = b.vehicle_id AND v.is_deleted=0', 'left')
 
       ->where('b.booking_id', $booking_id)
       ->get()

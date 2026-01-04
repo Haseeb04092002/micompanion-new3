@@ -11,8 +11,8 @@ if ($this->session->userdata('admin_id')) {
 }
 ?>
 
-<div class="bg-white border-bottom sticky-top">
-  <div class="container py-2">
+<div class="bg-primary border-bottom sticky-top">
+  <div class="container py-1">
     <div class="text-center fw-bold"
          style="color:var(--orange); font-size:14px;">
       <?= $role_label ?>

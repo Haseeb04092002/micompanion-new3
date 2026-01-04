@@ -11,7 +11,7 @@ include(APPPATH . 'views/_partials/topbar.php'); ?>
     <div class="card card-soft p-3 mb-2 rowItem">
       <div class="justify-content-between align-items-center d-flex">
         <div class="fw-bold"><?= $r['name'] ?></div>
-        <a class="btn btn-info p-0 btn-sm"
+        <a class="btn btn-info p-1 btn-sm"
           href="<?= site_url('admin/admin_customers/view/' . $r['user_id']) ?>">
           Details
         </a>

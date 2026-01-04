@@ -1,11 +1,11 @@
-<div class="p-3 bg-white border-bottom sticky-top">
+<div class="p-2 bg-white border-bottom sticky-top">
   <div class="position-relative d-flex align-items-center">
 
     <!-- LEFT: LOGO -->
     <div class="d-flex align-items-center">
       <img src="<?= base_url('assets/icons/icon-192x192.png') ?>"
            alt="MiCompanion"
-           style="height:32px;width:auto;">
+           style="height:35px;width:auto;">
     </div>
 
     <!-- CENTER: PAGE TITLE -->

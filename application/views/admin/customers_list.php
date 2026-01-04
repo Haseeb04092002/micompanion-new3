@@ -10,19 +10,18 @@ include(APPPATH . 'views/_partials/topbar.php'); ?>
   <?php foreach ($rows as $r): ?>
     <div class="card card-soft p-3 mb-2 rowItem">
       <div class="justify-content-between align-items-center d-flex">
-        <div class="fw-bold"><?= $r['name'] ?></div>
-        <a class="btn btn-info p-1 btn-sm"
-          href="<?= site_url('admin/admin_customers/view/' . $r['user_id']) ?>">
-          Details
-        </a>
+        <div class="fw-bold fs-4"><?= $r['name'] ?></div>
+        <span class="bg-secondary text-light badge badge-sm"><?= $r['status'] ?></span>
       </div>
-      <div class="small text-muted"><?= $r['email'] ?> | <?= $r['status'] ?></div>
+      <div class="small text-muted"><?= $r['email'] ?></div>
       <div class="mt-2 d-flex gap-2">
         <a class="<?= ($r['status'] != 'approved')?'d-block':'d-none' ?> p-1 btn btn-success btn-sm" href="<?= site_url('admin/admin_customers/approve/' . $r['user_id']) ?>">Approve</a>
         <a class="<?= ($r['status'] != 'rejected')?'d-block':'d-none' ?> p-1 btn btn-warning btn-sm" href="<?= site_url('admin/admin_customers/reject/' . $r['user_id']) ?>">Reject</a>
         <a class="<?= ($r['status'] != 'suspended')?'d-block':'d-none' ?> p-1 btn btn-danger btn-sm" href="<?= site_url('admin/admin_customers/suspend/' . $r['user_id']) ?>">Suspend</a>
-
-
+        <a class="btn btn-info p-1 btn-sm"
+          href="<?= site_url('admin/admin_customers/view/' . $r['user_id']) ?>">
+          Details
+        </a>
       </div>
     </div>
   <?php endforeach; ?>

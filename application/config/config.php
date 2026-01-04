@@ -23,7 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://127.0.0.1/micompanion-new3';
+$config['base_url'] = 'https://companion.itimium.com.pk/';
 // $config['base_url'] = 'https://itimium.com/others/micompanion';
 
 /*

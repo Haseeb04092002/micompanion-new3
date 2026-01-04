@@ -1,3 +1,26 @@
+<?php
+// Auto-detect role from session
+$role_label = 'Dashboard';
+
+if ($this->session->userdata('admin_id')) {
+  $role_label = 'Admin';
+} elseif ($this->session->userdata('driver_id')) {
+  $role_label = 'Driver';
+} elseif ($this->session->userdata('customer_id')) {
+  $role_label = 'Customer';
+}
+?>
+
+<div class="bg-white border-bottom sticky-top">
+  <div class="container py-2">
+    <div class="text-center fw-bold"
+         style="color:var(--orange); font-size:14px;">
+      <?= $role_label ?>
+    </div>
+  </div>
+</div>
+
+
 <!-- TOP APP BAR -->
 <div class="p-3 bg-white border-bottom sticky-top">
   <div class="position-relative d-flex align-items-center">

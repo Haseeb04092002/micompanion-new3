@@ -86,4 +86,16 @@ class Driver_vehicles extends CI_Controller {
 
     $this->load->view('driver/vehicle_form',$data);
   }
+
+  public function view($vehicle_id)
+{
+  $driver_id = (int)$this->session->userdata('driver_id');
+
+  $vehicle = $this->veh->get_by_id_and_driver($vehicle_id, $driver_id);
+  if(!$vehicle) show_404();
+
+  $data['vehicle'] = $vehicle;
+  $this->load->view('driver/vehicle_view', $data);
+}
+
 }

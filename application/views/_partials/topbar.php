@@ -50,12 +50,10 @@ if ($this->session->userdata('admin_id')) {
 
     <!-- RIGHT: LOGOUT -->
     <div class="ms-auto">
-      <?php if (isset($logout_url)): ?>
         <a class="btn btn-sm btn-outline-dark"
           href="<?= site_url($logout_url) ?>">
-          Logout
+          <i class="bi bi-chat-text fs-4"></i>
         </a>
-      <?php endif; ?>
     </div>
 
   </div>
@@ -101,6 +99,14 @@ if ($this->session->userdata('admin_id')) {
       href="https://wa.me/923485467516">
       <i class="bi bi-whatsapp fs-5"></i> Chat on WhatsApp
     </a>
+    
+    <?php if (isset($logout_url)): ?>
+    <a class="d-flex align-items-center gap-3 px-3 py-3 border-bottom text-decoration-none"
+      target="_blank"
+      href="<?= site_url($logout_url) ?>">
+      <i class="bi bi-box-arrow-left fs-5"></i> Logout
+    </a>
+    <?php endif; ?>
 
     <a type="button" class="d-flex align-items-center gap-3 px-3 py-3 border-bottom text-decoration-none"
       onclick="forceUpdateApp()">

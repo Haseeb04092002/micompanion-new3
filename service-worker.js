@@ -2,7 +2,7 @@
    MiCompanion PWA – Service Worker
    ========================================================= */
 
-const CACHE_VERSION = "micompanion-v1.0.4";
+const CACHE_VERSION = "micompanion-v1.0.5";
 const CACHE_NAME = `micompanion-cache-${CACHE_VERSION}`;
 
 /* ---------------------------------------------------------

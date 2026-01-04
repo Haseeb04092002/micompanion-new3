@@ -18,9 +18,9 @@ include(APPPATH . 'views/_partials/topbar.php'); ?>
       </div>
       <div class="small text-muted"><?= $r['email'] ?> | <?= $r['status'] ?></div>
       <div class="mt-2 d-flex gap-2">
-        <a class="<?= ($r['status'] != 'approved')?'d-block':'d-none' ?> btn btn-success btn-sm" href="<?= site_url('admin/admin_customers/approve/' . $r['user_id']) ?>">Approve</a>
-        <a class="<?= ($r['status'] != 'rejected')?'d-block':'d-none' ?> btn btn-warning btn-sm" href="<?= site_url('admin/admin_customers/reject/' . $r['user_id']) ?>">Reject</a>
-        <a class="<?= ($r['status'] != 'suspended')?'d-block':'d-none' ?> btn btn-danger btn-sm" href="<?= site_url('admin/admin_customers/suspend/' . $r['user_id']) ?>">Suspend</a>
+        <a class="<?= ($r['status'] != 'approved')?'d-block':'d-none' ?> p-1 btn btn-success btn-sm" href="<?= site_url('admin/admin_customers/approve/' . $r['user_id']) ?>">Approve</a>
+        <a class="<?= ($r['status'] != 'rejected')?'d-block':'d-none' ?> p-1 btn btn-warning btn-sm" href="<?= site_url('admin/admin_customers/reject/' . $r['user_id']) ?>">Reject</a>
+        <a class="<?= ($r['status'] != 'suspended')?'d-block':'d-none' ?> p-1 btn btn-danger btn-sm" href="<?= site_url('admin/admin_customers/suspend/' . $r['user_id']) ?>">Suspend</a>
 
 
       </div>

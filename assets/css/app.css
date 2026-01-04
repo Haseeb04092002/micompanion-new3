@@ -96,6 +96,16 @@ h5 {
   background: #a30800;
 }
 
+.btn-outline-primary {
+  background: var(--white);
+  border-color: var(--black);
+  color: var(--black);
+}
+
+.btn-outline-primary:hover {
+  background: var(--primary);
+}
+
 .btn-secondary {
   background: var(--secondary);
   border-color: var(--secondary);

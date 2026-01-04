@@ -1,0 +1,314 @@
+/* =========================================================
+   ROOT VARIABLES – BRAND COLORS
+   ========================================================= */
+:root {
+  --primary: #f5ad00;      
+  --secondary: #c60a00;    
+  --orange: #ef6c00;       
+  --orange: #c60a00;       
+  --black: #111;
+  --white: #fff;
+  --blue: #0d6efd;
+
+  --bg-light: #f6f7f9;
+  --border-light: #e3e3e3;
+
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+
+  --shadow-soft: 0 6px 18px rgba(0,0,0,.08);
+  --shadow-hover: 0 10px 28px rgba(0,0,0,.12);
+}
+
+/* =========================================================
+   BASE / BODY
+   ========================================================= */
+body {
+  background: var(--bg-light);
+  color: var(--black);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-bottom: 80px; /* space for bottom bars */
+}
+
+a {
+  color: var(--orange);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary);
+}
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+h1, h2, h3, h4, h5 {
+  font-weight: 600;
+}
+
+h5 {
+  font-size: 1.1rem;
+}
+
+/* =========================================================
+   CARDS – CORE UI ELEMENT
+   ========================================================= */
+.card {
+  border-radius: var(--radius-lg);
+}
+
+.card-soft {
+  background: var(--white);
+  border: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.btn {
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  padding: .55rem .9rem;
+}
+
+.btn-orange {
+  background: var(--orange);
+  color: var(--white);
+  border: 0;
+}
+
+.btn-orange:hover {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-primary:hover {
+  background: #a30800;
+}
+
+.btn-secondary {
+  background: var(--secondary);
+  border-color: var(--secondary);
+  color: #000;
+}
+
+.btn-outline-dark {
+  border-color: #333;
+  color: #333;
+}
+
+.btn-outline-dark:hover {
+  background: #333;
+  color: #fff;
+}
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+.form-control,
+.form-select {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  font-size: 14px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 .15rem rgba(239,108,0,.25);
+}
+
+label {
+  font-weight: 500;
+}
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+.alert {
+  border-radius: var(--radius-md);
+  font-size: 13px;
+}
+
+.alert-success { background:#e7f5ec; color:#0f5132; }
+.alert-danger  { background:#fdecea; color:#842029; }
+.alert-warning { background:#fff4d6; color:#664d03; }
+.alert-info    { background:#e7f1ff; color:#084298; }
+
+/* =========================================================
+   CHIPS / TAGS
+   ========================================================= */
+.chip {
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  padding: .35rem .7rem;
+  font-size: .85rem;
+  background: #fff;
+}
+
+/* =========================================================
+   LIST ITEMS (Bookings / Jobs / Notifications)
+   ========================================================= */
+.rowItem,
+.list-item {
+  border-radius: var(--radius-md);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.rowItem:hover,
+.list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* =========================================================
+   AUTH BOTTOM BAR (LOGIN / REGISTER)
+   ========================================================= */
+.auth-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border-light);
+  z-index: 999;
+}
+
+.auth-bottom-bar a {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  color: #555;
+  font-size: 12px;
+}
+
+.auth-bottom-bar a i {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.auth-bottom-bar a:hover {
+  color: var(--orange);
+}
+
+/* =========================================================
+   APP BOTTOM BAR (ADMIN / DRIVER / CUSTOMER)
+   ========================================================= */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border-light);
+  z-index: 999;
+}
+
+.bottom-bar a {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  color: #444;
+  font-size: 12px;
+}
+
+.bottom-bar a i {
+  display: block;
+  font-size: 20px;
+}
+
+.bottom-bar a.active,
+.bottom-bar a:hover {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+.badge {
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+.bg-warning {
+  background: var(--secondary) !important;
+  color: #000 !important;
+}
+
+.bg-primary {
+  background: var(--primary) !important;
+}
+
+/* =========================================================
+   IMAGES (DOCUMENTS / PROFILE)
+   ========================================================= */
+img {
+  max-width: 100%;
+}
+
+.img-doc {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  padding: 4px;
+  background: var(--white);
+}
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+.notification-new {
+  border-left: 4px solid var(--secondary);
+}
+
+/* =========================================================
+   TABLES (ADMIN)
+   ========================================================= */
+.table {
+  font-size: 13px;
+}
+
+.table thead {
+  background: #f1f1f1;
+}
+
+.table th {
+  font-weight: 600;
+}
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+.text-primary { color: var(--primary) !important; }
+.text-secondary { color: var(--secondary) !important; }
+.shadow-soft { box-shadow: var(--shadow-soft); }
+.rounded-soft { border-radius: var(--radius-lg); }
+
+/* =========================================================
+   TOUCH OPTIMIZATION (PWA)
+   ========================================================= */
+button,
+a,
+input,
+select {
+  touch-action: manipulation;
+}
+
+/* =========================================================
+   SMALL DEVICES
+   ========================================================= */
+@media (max-width: 576px) {
+  h5 { font-size: 1rem; }
+  .btn { font-size: 14px; }
+}

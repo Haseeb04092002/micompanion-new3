@@ -21,3 +21,25 @@
 </head>
 
 <body class="bg-light">
+
+<!-- GLOBAL PAGE LOADER -->
+<div id="pageLoader"
+     class="position-fixed top-0 start-0 w-100 h-100 d-none
+            align-items-center justify-content-center"
+     style="background:rgba(255,255,255,.85); z-index:2000;">
+
+  <div class="text-center">
+    <div class="spinner-border text-warning mb-3"
+         role="status"
+         style="width:3rem;height:3rem;">
+    </div>
+
+    <div class="fw-bold" style="color:var(--orange);">
+      Please wait...
+    </div>
+    <div class="small text-muted">
+      Processing your request
+    </div>
+  </div>
+
+</div>

@@ -67,6 +67,24 @@ h5 {
   box-shadow: var(--shadow-soft);
 }
 
+/* ===============================
+   GLOBAL PAGE LOADER
+   =============================== */
+
+#pageLoader {
+  transition: opacity .2s ease;
+}
+
+#pageLoader.show {
+  display: flex !important;
+  opacity: 1;
+}
+
+#pageLoader.hide {
+  opacity: 0;
+}
+
+
 /* =========================================================
    BUTTONS
    ========================================================= */

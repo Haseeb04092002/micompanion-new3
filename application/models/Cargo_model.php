@@ -19,6 +19,23 @@ class Cargo_model extends CI_Model
     return $id;
   }
 
+  public function get_full_by_id($booking_id)
+  {
+    return $this->db
+      ->select('b.*,
+              c.name AS customer_name, c.phone AS customer_phone,
+              d.name AS driver_name, d.phone AS driver_phone,
+              v.name AS vehicle_name')
+      ->from('cargo_bookings b')
+      ->join('customers c', 'c.customer_id=b.customer_id')
+      ->join('drivers d', 'd.driver_id=b.driver_id', 'left')
+      ->join('vehicles v', 'v.vehicle_id=b.vehicle_id', 'left')
+      ->where('b.booking_id', (int)$booking_id)
+      ->get()
+      ->row_array();
+  }
+
+
   public function get_by_id_and_customer($booking_id, $customer_id)
   {
     $booking_id  = (int)$booking_id;

@@ -23,7 +23,7 @@
     </select>
   </div>
 
-  <button class="btn btn-orange w-100" name="do_assign">Assign</button>
+  <button class="btn btn-orange w-100" name="do_assign" value="1">Assign</button>
 </form>
 </div>
 </div>

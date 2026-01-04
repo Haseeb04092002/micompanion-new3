@@ -17,7 +17,7 @@ class Vehicle_model extends CI_Model
     return $this->db
       ->where('vehicle_id', $vehicle_id)
       ->where('driver_id', $driver_id)
-      ->get('vehicles')
+      ->get('driver_vehicles')
       ->row_array();
   }
 

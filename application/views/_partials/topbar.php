@@ -73,10 +73,10 @@
       <span>How to Use?</span>
     </a>
 
-    <a class="btn btn-success w-100"
+    <a class="d-flex align-items-center gap-3 px-3 py-3 border-bottom text-decoration-none"
       target="_blank"
       href="https://wa.me/923485467516">
-      <i class="bi bi-whatsapp me-1"></i> Chat on WhatsApp
+      <i class="bi bi-whatsapp fs-5"></i> Chat on WhatsApp
     </a>
 
     <a target="_blank" href="https://itimium.com.pk/"

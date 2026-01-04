@@ -1,21 +1,64 @@
 {
-  "name": "micompanion",
-  "short_name": "micompanion",
-  "start_url": "/others/micompanion/",
-  "scope": "/others/micompanion/",
+  "id": "/",
+  "name": "MiCompanion – Cargo & Logistics Management",
+  "short_name": "MiCompanion",
+  "description": "MiCompanion is a smart cargo and logistics management PWA for customers, drivers, and admins. Book cargo, manage vehicles, assign drivers, track deliveries, and monitor shipments in real time.",
+  
+  "start_url": "/?source=pwa",
+  "scope": "/",
+
   "display": "standalone",
-  "theme_color": "#0d6efd",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+
+  "theme_color": "#c60a00",
   "background_color": "#ffffff",
+
+  "lang": "en",
+  "dir": "ltr",
+
+  "categories": [
+    "business",
+    "logistics",
+    "transportation",
+    "productivity"
+  ],
+
   "icons": [
     {
-      "src": "/others/micompanion/assets/icons/icon-192x192.png",
+      "src": "/assets/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/others/micompanion/assets/icons/icon-512x512.png",
+      "src": "/assets/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ]
+  ],
+
+  "screenshots": [
+    {
+      "src": "/assets/screenshots/screenshot-1.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+
+  "prefer_related_applications": false
 }

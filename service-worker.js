@@ -1,69 +1,109 @@
-const CACHE_NAME = "micompanion-v1.0"; // Add versioning for easier updates
-const urlsToCache = [
+/* =========================================================
+   MiCompanion PWA – Service Worker
+   ========================================================= */
 
-  "<?= base_url('index.php/micompanion'); ?>",
-  "<?= base_url('manifest.json'); ?>",
+const CACHE_VERSION = "v1.0.1";
+const CACHE_NAME = `micompanion-cache-${CACHE_VERSION}`;
 
-  // CSS
-  "<?= base_url('assets/css/bootstrap5.min.css'); ?>",
-  "<?= base_url('assets/css/cropper.min.css'); ?>",
-  "<?= base_url('assets/css/swiper-bundle.min.css'); ?>",
-  "<?= base_url('assets/css/style.css'); ?>",
-  "<?= base_url('assets/css/style_responsive.css'); ?>",
-  "<?= base_url('assets/css/animated_cards.css'); ?>",
-  "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css",
-  "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
-  "https://fonts.googleapis.com",
-  "https://fonts.gstatic.com",
-  "https://fonts.googleapis.com/css2?family=Aclonica&family=Arapey:ital@0;1&family=Comic+Relief:wght@400;700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&family=Yeseva+One&display=swap",
+/* ---------------------------------------------------------
+   FILES TO PRE-CACHE (STATIC ONLY)
+   --------------------------------------------------------- */
+const STATIC_ASSETS = [
+  "/",                       // landing / welcome
+  "/manifest.json",
 
+  /* CSS */
+  "/assets/css/app.css",
 
-  // JS
-  "<?= base_url('assets/js/bootstrap5.bundle.min.js'); ?>",
-  "<?= base_url('assets/js/swiper-bundle.min.js'); ?>",
-  "<?= base_url('assets/js/cropper.min.js'); ?>",
-  "<?= base_url('assets/js/chart.js'); ?>",
-  "<?= base_url('assets/js/haseeb.js'); ?>",
+  /* JS */
 
-  // Icons
-  "<?= base_url('assets/icons/icon-192x192.png'); ?>",
-  "<?= base_url('assets/icons/icon-512x512.png'); ?>"
+  /* Icons */
+  "/assets/icons/icon-192x192.png",
+  "/assets/icons/icon-512x512.png"
 ];
 
-// INSTALL - cache essential files
+/* =========================================================
+   INSTALL – Cache core assets
+   ========================================================= */
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache);
-    }).catch(err => {
-      console.error("Failed to cache resources on install:", err);
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(STATIC_ASSETS))
+      .then(() => self.skipWaiting())
   );
 });
 
-// ACTIVATE - clean up old caches if needed
+/* =========================================================
+   ACTIVATE – Clean old caches
+   ========================================================= */
 self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then(cacheNames =>
+    caches.keys().then(keys =>
       Promise.all(
-        cacheNames.map(name => {
-          if (name !== CACHE_NAME) {
-            return caches.delete(name);
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
           }
         })
       )
-    )
+    ).then(() => self.clients.claim())
   );
 });
 
-// FETCH - return cached response or fetch from network
+/* =========================================================
+   FETCH STRATEGY
+   ---------------------------------------------------------
+   - HTML pages → Network first (auth safe)
+   - CSS / JS / Images → Cache first
+   - API / POST → Network only
+   ========================================================= */
 self.addEventListener("fetch", event => {
+
+  /* Ignore non-GET requests (POST, PUT, DELETE) */
+  if (event.request.method !== "GET") {
+    return;
+  }
+
+  const requestURL = new URL(event.request.url);
+
+  /* ---- HTML / Navigation ---- */
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+          return response;
+        })
+        .catch(() => caches.match(event.request) || caches.match("/"))
+    );
+    return;
+  }
+
+  /* ---- Static assets (CSS, JS, images) ---- */
+  if (
+    requestURL.pathname.startsWith("/assets/") ||
+    requestURL.hostname.includes("fonts.googleapis.com") ||
+    requestURL.hostname.includes("fonts.gstatic.com")
+  ) {
+    event.respondWith(
+      caches.match(event.request).then(cached => {
+        return (
+          cached ||
+          fetch(event.request).then(response => {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+            return response;
+          })
+        );
+      })
+    );
+    return;
+  }
+
+  /* ---- Default: Network first ---- */
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    }).catch(err => {
-      console.error("Fetch failed:", err);
-      return fetch(event.request);
-    })
+    fetch(event.request).catch(() => caches.match(event.request))
   );
+
 });

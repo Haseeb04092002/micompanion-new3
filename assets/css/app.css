@@ -98,7 +98,7 @@ h5 {
 .btn {
   border-radius: var(--radius-md);
   font-weight: 500;
-  /* padding: .55rem .9rem; */
+  padding: 4px;
 }
 
 .btn-orange {

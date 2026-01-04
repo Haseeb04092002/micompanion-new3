@@ -6,7 +6,7 @@
 <?php foreach($rows as $r): ?>
 <div class="card card-soft p-3 mb-2">
   <div class="fw-bold">#<?= $r['booking_id'] ?> | <?= $r['city_from'] ?> → <?= $r['city_to'] ?></div>
-  <div class="small">Custome555r: <?= $r['customer_name'] ?> | Status: <?= $r['status'] ?></div>
+  <div class="small">Customer: <?= $r['customer_name'] ?> | Status: <?= $r['status'] ?></div>
 
   <div class="mt-2">
     <a class="btn btn-orange btn-sm" href="<?= site_url('admin/admin_cargo/assign/'.$r['booking_id']) ?>">Assign Driver</a>

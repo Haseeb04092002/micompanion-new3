@@ -79,7 +79,7 @@
       <i class="bi bi-whatsapp me-1"></i> Chat on WhatsApp
     </a>
 
-    <a href="<?= site_url('pages/developers') ?>"
+    <a target="_blank" href="https://itimium.com.pk/"
       class="d-flex align-items-center gap-3 px-3 py-3 text-decoration-none">
       <i class="bi bi-code-slash fs-5"></i>
       <span>About Developers</span>

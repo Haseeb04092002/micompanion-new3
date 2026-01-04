@@ -27,7 +27,7 @@ class Cargo_model extends CI_Model
               d.name AS driver_name, d.phone AS driver_phone,
               v.name AS vehicle_name')
       ->from('cargo_bookings b')
-      ->join('customers c', 'c.customer_id=b.customer_id')
+      ->join('customer_profiles c', 'c.customer_id=b.customer_id')
       ->join('drivers d', 'd.driver_id=b.driver_id', 'left')
       ->join('vehicles v', 'v.vehicle_id=b.vehicle_id', 'left')
       ->where('b.booking_id', (int)$booking_id)

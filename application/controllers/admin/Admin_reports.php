@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin_reports extends CI_Controller {
+class Admin_reports extends MY_Controller {
 
   public function __construct(){
     parent::__construct();

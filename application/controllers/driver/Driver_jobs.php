@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Driver_jobs extends CI_Controller {
+class Driver_jobs extends MY_Controller {
 
   public function __construct(){
     parent::__construct();

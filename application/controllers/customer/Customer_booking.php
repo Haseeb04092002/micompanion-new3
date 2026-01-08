@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Customer_booking extends CI_Controller
+class Customer_booking extends MY_Controller
 {
 
   public function __construct()

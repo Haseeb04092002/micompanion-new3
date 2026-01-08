@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 use Dompdf\Dompdf;
 
-class Admin_cargo_bilty extends CI_Controller {
+class Admin_cargo_bilty extends MY_Controller {
 
   public function __construct(){
     parent::__construct();

@@ -51,7 +51,7 @@ if ($this->session->userdata('admin_id')) {
     <!-- RIGHT: LOGOUT -->
     <div class="ms-auto">
         <a class="btn btn-sm btn-outline-dark"
-          href="<?= site_url($logout_url) ?>">
+          href="">
           <i class="bi bi-chat-text fs-4"></i>
         </a>
     </div>

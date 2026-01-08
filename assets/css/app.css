@@ -91,39 +91,59 @@ h5 {
 }
 
 
+
+
 /* ===============================
-   SPLASH SCREEN
+   NATIVE SPLASH SCREEN
    =============================== */
 
 .app-splash {
   position: fixed;
   inset: 0;
   background: #ffffff;
-  z-index: 3000;
+  z-index: 99999;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  opacity: 1;
+  transition: opacity .6s ease;
 }
 
-.app-splash.d-none {
-  display: none !important;
+.app-splash.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-inner {
+  text-align: center;
+  transform: scale(1);
+  animation: splashZoom 1.2s ease;
+}
+
+@keyframes splashZoom {
+  0%   { opacity: 0; transform: scale(.85); }
+  60%  { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 .splash-logo {
-  width: 90px;
+  width: 96px;
   height: auto;
+  margin-bottom: 16px;
 }
 
 .splash-title {
   font-size: 22px;
+  font-weight: 700;
   color: var(--orange);
-  letter-spacing: 0.5px;
 }
 
 .splash-tagline {
   font-size: 13px;
   color: #555;
+  margin-top: 4px;
 }
 
 

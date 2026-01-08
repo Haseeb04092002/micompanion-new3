@@ -22,27 +22,20 @@
 
 <body class="bg-light">
 
-<!-- APP SPLASH SCREEN -->
-<div id="appSplash" class="app-splash d-none">
-  <div class="splash-content text-center">
+<!-- NATIVE APP SPLASH -->
+<div id="appSplash" class="app-splash">
+  <div class="splash-inner">
 
-    <!-- LOGO -->
     <img src="<?= base_url('assets/icons/icon-192x192.png') ?>"
          alt="MiCompanion"
-         class="splash-logo mb-3">
+         class="splash-logo">
 
-    <!-- APP NAME -->
-    <div class="fw-bold splash-title">
-      MiCompanion
-    </div>
-
-    <!-- SLOGAN -->
-    <div class="splash-tagline">
-      Your Smart Cargo Companion
-    </div>
+    <div class="splash-title">MiCompanion</div>
+    <div class="splash-tagline">Your Smart Cargo Companion</div>
 
   </div>
 </div>
+
 
 
 <!-- GLOBAL PAGE LOADER -->
@@ -62,19 +55,33 @@
 <script>
 (function () {
 
+  const splashKey = 'micompanion_splash_v1';
   const splash = document.getElementById('appSplash');
-  const key = 'micompanion_splash_shown';
 
-  if (!localStorage.getItem(key)) {
+  // Disable scroll during splash
+  document.body.style.overflow = 'hidden';
 
-    splash.classList.remove('d-none');
+  if (!localStorage.getItem(splashKey)) {
 
+    // First launch → show splash
     setTimeout(() => {
-      splash.classList.add('d-none');
-      localStorage.setItem(key, '1');
-    }, 2000);
+      splash.classList.add('hide');
 
+      setTimeout(() => {
+        splash.remove();
+        document.body.style.overflow = '';
+        localStorage.setItem(splashKey, '1');
+      }, 700);
+
+    }, 1800); // total splash time
+
+  } else {
+
+    // Already shown → remove instantly
+    splash.remove();
+    document.body.style.overflow = '';
   }
 
 })();
 </script>
+

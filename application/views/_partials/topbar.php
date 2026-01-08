@@ -20,7 +20,7 @@ switch ($user_role) {
       $logout_url = base_url('driver/driver_auth/logout');
       break;
   case 'customer':
-      $logout_url = base_url('customer/customer_auth/logout');
+      $logout_url = base_url('customer/Customer_auth/logout');
       break;
 }
 ?>

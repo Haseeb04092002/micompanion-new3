@@ -31,7 +31,7 @@ $user_role = $this->session->userdata('role');
     <div class="d-flex gap-2">
       <input type="text" name="message" class="form-control" placeholder="Type a message..." required>
       <button class="btn btn-orange">
-        <i class="bi bi-send"></i>
+        <i class="bi bi-send"></i> <?= $user_role ?>
       </button>
     </div>
   </form>

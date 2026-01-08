@@ -1,10 +1,12 @@
 <?php
 include(APPPATH.'views/_partials/header.php');
-$page_title=$chat_with_name; include(APPPATH.'views/_partials/topbar.php');
-$data['user_role'] = $this->session->userdata('role'); // admin|driver|customer
+$page_title = $chat_with_name;
+include(APPPATH.'views/_partials/topbar.php');
+
+$user_role = $this->session->userdata('role');
 ?>
 
-<div class="container pb-5">
+<div class="container chat-wrapper">
 
   <!-- CHAT MESSAGES -->
   <div class="mb-3" style="min-height:65vh;">
@@ -22,15 +24,12 @@ $data['user_role'] = $this->session->userdata('role'); // admin|driver|customer
     <?php endforeach; ?>
   </div>
 
-  <!-- MESSAGE BOX -->
-  <form method="post" class="position-fixed bottom-0 start-0 end-0 bg-white p-2 border-top">
+  <!-- CHAT INPUT BAR -->
+  <form method="post"
+        class="position-fixed start-0 end-0 bg-white p-2 border-top"
+        style="bottom:60px;">
     <div class="d-flex gap-2">
-      <input type="text"
-             name="message"
-             class="form-control"
-             placeholder="Type a message..."
-             required>
-
+      <input type="text" name="message" class="form-control" placeholder="Type a message..." required>
       <button class="btn btn-orange">
         <i class="bi bi-send"></i>
       </button>
@@ -40,20 +39,19 @@ $data['user_role'] = $this->session->userdata('role'); // admin|driver|customer
 </div>
 
 <?php
-echo $data['user_role'];
-die();
-switch ($data['user_role']) {
+// 🔹 BOTTOM NAVIGATION
+switch ($user_role) {
     case 'admin':
         include(APPPATH.'views/_partials/bottom_admin.php');
         break;
-
     case 'driver':
         include(APPPATH.'views/_partials/bottom_driver.php');
         break;
-
     case 'customer':
         include(APPPATH.'views/_partials/bottom_customer.php');
         break;
 }
+
+// 🔹 FOOTER
 include(APPPATH.'views/_partials/footer.php');
 ?>

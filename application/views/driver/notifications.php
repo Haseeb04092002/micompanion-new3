@@ -20,10 +20,6 @@
           <div class="small text-muted mt-2">
             <?= date('d M Y, h:i A', strtotime($n['created_at'])) ?>
           </div>
-
-          <?php if(!$n['is_read']): ?>
-            <span class="badge bg-warning text-dark mt-2">New</span>
-          <?php endif; ?>
         </div>
       <?php endforeach; ?>
 

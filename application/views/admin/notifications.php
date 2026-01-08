@@ -31,12 +31,6 @@ include(APPPATH . 'views/_partials/topbar.php'); ?>
               </div>
             </div>
 
-            <?php if (!$n['is_read']): ?>
-              <span class="badge rounded-pill bg-warning text-light px-3 py-2">
-                New
-              </span>
-            <?php endif; ?>
-
           </div>
         </div>
 

@@ -12,8 +12,10 @@ class Customer_chat extends MY_Controller {
     {
     // load messages between customer & admin
     $data['chat_with_name'] = 'Admin';
-    $data['messages'] = $this->chat->customer_admin_messages();
+    $data['messages'] = $this->chat->get_messages_for_other();
     $this->load->view('chat/chat_box', $data);
+
+    
     }
 
 }

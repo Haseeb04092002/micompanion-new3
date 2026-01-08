@@ -127,7 +127,6 @@ switch ($user_role) {
     
     <?php if (isset($logout_url)): ?>
     <a class="d-flex align-items-center gap-3 px-3 py-3 border-bottom text-decoration-none"
-      target="_blank"
       href="<?= site_url($logout_url) ?>">
       <i class="bi bi-box-arrow-left fs-5"></i> Logout
     </a>

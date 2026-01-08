@@ -22,7 +22,7 @@ class User_model extends CI_Model {
   }
   public function get_admin_id()
   {
-    $row = $this->db->select('id')
+    $row = $this->db->select('user_id')
       ->where('role','admin')
       ->limit(1)
       ->get('users')

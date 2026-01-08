@@ -48,13 +48,24 @@ if ($this->session->userdata('admin_id')) {
       <?= isset($page_title) ? $page_title : 'Dashboard' ?>
     </div>
 
-    <!-- RIGHT: LOGOUT -->
+    <!-- RIGHT: CHAT -->
     <div class="ms-auto">
-        <a class="btn btn-sm btn-outline-dark"
-          href="">
-          <i class="bi bi-chat-text fs-4"></i>
-        </a>
+      <?php
+        $chat_url = '#';
+
+        if ($this->session->userdata('admin_id')) {
+          $chat_url = site_url('admin/admin_chat');
+        } elseif ($this->session->userdata('customer_id')) {
+          $chat_url = site_url('customer/customer_chat');
+        } elseif ($this->session->userdata('driver_id')) {
+          $chat_url = site_url('driver/driver_chat');
+        }
+      ?>
+      <a class="btn btn-sm btn-outline-dark" href="<?= $chat_url ?>">
+        <i class="bi bi-chat-text fs-4"></i>
+      </a>
     </div>
+
 
   </div>
 </div>

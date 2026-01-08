@@ -6,13 +6,14 @@ class Customer_chat extends MY_Controller {
     parent::__construct();
     $this->load->model('Auth_model','auth');
     $this->load->model('User_model','user');
+    $this->load->model('Chat_model');
   }
 
   public function index()
     {
     // load messages between customer & admin
     $data['chat_with_name'] = 'Admin';
-    $data['messages'] = $this->chat->get_messages_for_other();
+    $data['messages'] = $this->Chat_model->get_messages_for_other();
     $this->load->view('chat/chat_box', $data);
 
     

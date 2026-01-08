@@ -40,6 +40,8 @@ $data['user_role'] = $this->session->userdata('role'); // admin|driver|customer
 </div>
 
 <?php
+echo $data['user_role'];
+die();
 switch ($data['user_role']) {
     case 'admin':
         include(APPPATH.'views/_partials/bottom_admin.php');

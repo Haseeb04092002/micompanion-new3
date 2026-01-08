@@ -28,7 +28,7 @@ class User_model extends CI_Model {
       ->get('users')
       ->row_array();
 
-    return $row ? (int)$row['id'] : 1;
+    return $row ? (int)$row['user_id'] : 1;
   }
 
 }

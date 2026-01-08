@@ -14,13 +14,13 @@ $logout_url = '';
 // 🔹 BOTTOM NAVIGATION
 switch ($user_role) {
   case 'admin':
-      $logout_url = base_url('admin/admin_auth/logout');
+      $logout_url = 'admin/admin_auth/logout';
       break;
   case 'driver':
-      $logout_url = base_url('driver/driver_auth/logout');
+      $logout_url = 'driver/driver_auth/logout';
       break;
   case 'customer':
-      $logout_url = base_url('customer/Customer_auth/logout');
+      $logout_url = 'customer/Customer_auth/logout';
       break;
 }
 ?>

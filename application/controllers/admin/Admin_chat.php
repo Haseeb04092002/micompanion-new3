@@ -20,6 +20,8 @@ class Admin_chat extends MY_Controller {
 
     // Simple inbox (threads list)
     $data['threads'] = $this->chat->get_admin_threads($admin_id);
+    $data['threads_customers'] = $this->chat->get_admin_threads_with_users($admin_id, 'customer');
+    $data['threads_drivers']   = $this->chat->get_admin_threads_with_users($admin_id, 'driver');
     $this->load->view('chat/admin_inbox', $data);
   }
 

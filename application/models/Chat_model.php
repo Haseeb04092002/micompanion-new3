@@ -28,6 +28,29 @@ class Chat_model extends CI_Model {
     return (int)$this->db->insert_id();
   }
 
+  public function get_admin_threads_with_users($admin_id, $type)
+  {
+    $admin_id = (int)$admin_id;
+
+    if ($type === 'customer') {
+      $this->db->join('customers c', 'c.customer_id = t.other_user_id');
+      $this->db->select('t.thread_id, c.customer_id AS user_id, c.name, c.phone');
+    } else {
+      $this->db->join('drivers d', 'd.driver_id = t.other_user_id');
+      $this->db->select('t.thread_id, d.driver_id AS user_id, d.name, d.phone');
+    }
+
+    $this->db->select('MAX(m.created_at) AS last_msg_at', false);
+    $this->db->join('chat_messages m', 'm.thread_id = t.thread_id', 'left');
+    $this->db->from('chat_threads t');
+    $this->db->where('t.admin_id', $admin_id);
+    $this->db->group_by('t.thread_id');
+    $this->db->order_by('last_msg_at', 'DESC');
+
+    return $this->db->get()->result_array();
+  }
+
+
   public function get_thread_by_pair($admin_id, $other_user_id)
   {
     return $this->db->where([

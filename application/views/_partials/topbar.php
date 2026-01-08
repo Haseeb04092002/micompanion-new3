@@ -9,6 +9,20 @@ if ($this->session->userdata('admin_id')) {
 } elseif ($this->session->userdata('customer_id')) {
   $role_label = 'Customer';
 }
+$user_role = $this->session->userdata('role');
+$logout_url = '';
+// 🔹 BOTTOM NAVIGATION
+switch ($user_role) {
+  case 'admin':
+      $logout_url = base_url('admin/admin_auth/logout');
+      break;
+  case 'driver':
+      $logout_url = base_url('driver/driver_auth/logout');
+      break;
+  case 'customer':
+      $logout_url = base_url('customer/customer_auth/logout');
+      break;
+}
 ?>
 
 <div class="bg-primary border-bottom sticky-top">

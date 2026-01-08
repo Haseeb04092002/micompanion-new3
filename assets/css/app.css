@@ -91,6 +91,43 @@ h5 {
 }
 
 
+/* ===============================
+   SPLASH SCREEN
+   =============================== */
+
+.app-splash {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  z-index: 3000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-splash.d-none {
+  display: none !important;
+}
+
+.splash-logo {
+  width: 90px;
+  height: auto;
+}
+
+.splash-title {
+  font-size: 22px;
+  color: var(--orange);
+  letter-spacing: 0.5px;
+}
+
+.splash-tagline {
+  font-size: 13px;
+  color: #555;
+}
+
+
+
 
 /* =========================================================
    BUTTONS

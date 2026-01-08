@@ -22,6 +22,29 @@
 
 <body class="bg-light">
 
+<!-- APP SPLASH SCREEN -->
+<div id="appSplash" class="app-splash d-none">
+  <div class="splash-content text-center">
+
+    <!-- LOGO -->
+    <img src="<?= base_url('assets/icons/icon-192x192.png') ?>"
+         alt="MiCompanion"
+         class="splash-logo mb-3">
+
+    <!-- APP NAME -->
+    <div class="fw-bold splash-title">
+      MiCompanion
+    </div>
+
+    <!-- SLOGAN -->
+    <div class="splash-tagline">
+      Your Smart Cargo Companion
+    </div>
+
+  </div>
+</div>
+
+
 <!-- GLOBAL PAGE LOADER -->
 <div id="pageLoader" class="page-loader d-none">
   <div class="loader-content text-center">
@@ -36,3 +59,22 @@
   </div>
 </div>
 
+<script>
+(function () {
+
+  const splash = document.getElementById('appSplash');
+  const key = 'micompanion_splash_shown';
+
+  if (!localStorage.getItem(key)) {
+
+    splash.classList.remove('d-none');
+
+    setTimeout(() => {
+      splash.classList.add('d-none');
+      localStorage.setItem(key, '1');
+    }, 2000);
+
+  }
+
+})();
+</script>

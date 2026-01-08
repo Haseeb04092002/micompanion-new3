@@ -48,6 +48,13 @@ class Driver_chat extends MY_Controller {
 
     $this->chat->insert_message($thread_id, $driver_id, $message);
 
+    // 🔔 notify admin
+    $this->chat->create_chat_notification(
+        $admin_id,
+        'Driver',
+        $thread_id
+    );
+
     redirect('driver/driver_chat');
   }
 

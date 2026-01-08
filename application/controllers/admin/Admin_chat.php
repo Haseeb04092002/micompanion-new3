@@ -60,6 +60,13 @@ class Admin_chat extends MY_Controller {
 
     $this->chat->insert_message($thread_id, $admin_id, $message);
 
+    // 🔔 notify customer or driver
+    $this->chat->create_chat_notification(
+        $t['other_user_id'],
+        'Admin',
+        $thread_id
+    );
+
     redirect('admin/admin_chat/with/'.$t['other_user_id']);
   }
 

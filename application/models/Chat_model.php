@@ -28,6 +28,20 @@ class Chat_model extends CI_Model {
     return (int)$this->db->insert_id();
   }
 
+  public function create_chat_notification($receiver_id, $sender_name, $thread_id)
+  {
+      $this->db->insert('notifications', [
+          'user_id'    => (int)$receiver_id,
+          'title'      => 'New Message',
+          'body'       => 'Message from '.$sender_name,
+          'ref_type'   => 'chat',
+          'ref_id'     => (int)$thread_id,
+          'is_read'    => 0,
+          'created_at' => date('Y-m-d H:i:s')
+      ]);
+  }
+
+
   public function get_admin_threads_with_users($admin_id, $type)
   {
       $admin_id = (int)$admin_id;
@@ -101,6 +115,9 @@ class Chat_model extends CI_Model {
   /* =========================
      MESSAGES
      ========================= */
+
+    
+
 
   public function insert_message($thread_id, $sender_id, $message)
   {

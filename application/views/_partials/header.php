@@ -37,6 +37,29 @@
 </div>
 
 
+<div id="globalAlert"
+     class="position-fixed top-0 start-50 translate-middle-x mt-3"
+     style="z-index:9999; display:none;">
+
+  <div class="alert alert-primary shadow d-flex align-items-start gap-3"
+       role="alert"
+       style="min-width:320px; max-width:90vw;">
+
+    <i class="bi bi-bell fs-4"></i>
+
+    <div>
+      <div id="alertTitle" class="fw-bold">Notification</div>
+      <div id="alertBody" class="small"></div>
+    </div>
+
+    <button type="button" class="btn-close ms-auto"
+      onclick="hideGlobalAlert()"></button>
+
+  </div>
+</div>
+
+
+
 
 <!-- GLOBAL PAGE LOADER -->
 <!-- <div id="pageLoader" class="page-loader d-none">
@@ -83,5 +106,45 @@
   }
 
 })();
+
+let lastNotiId = 0;
+
+function showGlobalAlert(title, body, clickUrl = null) {
+  $('#alertTitle').text(title);
+  $('#alertBody').text(body);
+  $('#globalAlert').fadeIn();
+
+  if (clickUrl) {
+    $('#globalAlert').off('click').on('click', function () {
+      window.location.href = clickUrl;
+    });
+  }
+
+  setTimeout(hideGlobalAlert, 5000);
+}
+
+function hideGlobalAlert() {
+  $('#globalAlert').fadeOut();
+}
+
+function pollNotifications() {
+  $.get("<?= site_url('notifications/poll') ?>", { last_id: lastNotiId }, function(res){
+    if (!res || !res.notifications) return;
+
+    res.notifications.forEach(function(n){
+      lastNotiId = n.noti_id;
+
+      let url = '#';
+      if (n.ref_type === 'chat') {
+        url = n.chat_url;
+      }
+
+      showGlobalAlert(n.title, n.body, url);
+    });
+  }, 'json');
+}
+
+setInterval(pollNotifications, 3000);
+
 </script>
 

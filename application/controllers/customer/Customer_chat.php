@@ -51,6 +51,12 @@ class Customer_chat extends MY_Controller {
     if (!$thread || (int)$thread['thread_id'] !== (int)$thread_id) exit("Invalid Thread");
 
     $this->chat->insert_message($thread_id, $customer_id, $message);
+    // 🔔 notify admin
+    $this->chat->create_chat_notification(
+        $admin_id,
+        'Customer',
+        $thread_id
+    );
 
     redirect('customer/customer_chat');
   }

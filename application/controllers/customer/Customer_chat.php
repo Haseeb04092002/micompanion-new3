@@ -4,38 +4,80 @@ class Customer_chat extends MY_Controller {
 
   public function __construct(){
     parent::__construct();
-    $this->load->model('Auth_model','auth');
-    $this->load->model('User_model','user');
     $this->load->model('Chat_model','chat');
+    $this->load->model('User_model','user');
+  }
+
+  private function must_be_customer()
+  {
+    if (!$this->session->userdata('customer_id')) exit("Access Denied");
   }
 
   public function index()
   {
-    // 1. Logged-in customer
-    $customer_id = (int) $this->session->userdata('user_id');
+    $this->must_be_customer();
 
-    $row = $this->db
-        ->select('user_id')
-        ->where('role', 'admin')
-        ->limit(1)
-        ->get('users')
-        ->row_array();
+    $customer_id = (int)$this->session->userdata('customer_id');
 
-    // 2. Admin ID (single admin system OR first admin)
-    // $admin_id = (int) $this->user->get_admin_id();
-    $admin_id = $row ? (int)$row['user_id'] : 0;
+    // Admin id: either store in config/session OR fetch from users table
+    // If you already know admin is always 1, use: $admin_id = 1;
+    $admin_id = (int)$this->user->get_admin_id(); // you must have this method OR replace with 1
 
-    // 3. Ensure chat thread exists
     $thread_id = $this->chat->ensure_thread($admin_id, $customer_id);
 
-    // 4. Load messages
-    $data['messages'] = $this->chat->get_messages_for_other($thread_id);
-
+    $data = [];
+    $data['thread_id']      = $thread_id;
     $data['chat_with_name'] = 'Admin';
-    $data['thread_id'] = $thread_id;
+    $data['viewer_id']      = $customer_id;
+    $data['messages']       = $this->chat->get_messages($thread_id, $customer_id);
+    $data['last_id']        = $this->chat->get_last_msg_id($thread_id);
 
-    // 5. Load UI
+    $data['fetch_url']      = site_url('customer/customer_chat/fetch/'.$thread_id);
+    $data['send_url']       = site_url('customer/customer_chat/send/'.$thread_id);
+
     $this->load->view('chat/chat_box', $data);
   }
-}
 
+  public function send($thread_id)
+  {
+    $this->must_be_customer();
+    $customer_id = (int)$this->session->userdata('customer_id');
+
+    $message = $this->input->post('message', true);
+
+    // Security: customer can only send in their own thread (admin_id, other_user_id = customer)
+    $admin_id = (int)$this->user->get_admin_id();
+    $thread = $this->chat->get_thread_by_pair($admin_id, $customer_id);
+    if (!$thread || (int)$thread['thread_id'] !== (int)$thread_id) exit("Invalid Thread");
+
+    $this->chat->insert_message($thread_id, $customer_id, $message);
+
+    redirect('customer/customer_chat');
+  }
+
+  public function fetch($thread_id)
+  {
+    $this->must_be_customer();
+    $customer_id = (int)$this->session->userdata('customer_id');
+
+    $last_id = (int)$this->input->get('last_id');
+
+    // validate thread belongs to this customer
+    $admin_id = (int)$this->user->get_admin_id();
+    $thread = $this->chat->get_thread_by_pair($admin_id, $customer_id);
+    if (!$thread || (int)$thread['thread_id'] !== (int)$thread_id) exit;
+
+    $new = $this->chat->get_messages_since($thread_id, $customer_id, $last_id);
+
+    $html = $this->load->view('chat/_messages', ['messages'=>$new], true);
+    $new_last_id = $last_id;
+    foreach ($new as $m) $new_last_id = (int)$m['msg_id'];
+
+    $this->output
+      ->set_content_type('application/json')
+      ->set_output(json_encode([
+        'html' => $html,
+        'last_id' => $new_last_id
+      ]));
+  }
+}

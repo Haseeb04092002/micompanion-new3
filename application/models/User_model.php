@@ -20,4 +20,15 @@ class User_model extends CI_Model {
     $this->db->where('user_id', (int)$user_id)->update('users', $data);
     return $this->db->affected_rows() >= 0;
   }
+  public function get_admin_id()
+  {
+    $row = $this->db->select('id')
+      ->where('role','admin')
+      ->limit(1)
+      ->get('users')
+      ->row_array();
+
+    return $row ? (int)$row['id'] : 1;
+  }
+
 }

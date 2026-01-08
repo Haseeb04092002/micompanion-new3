@@ -2,138 +2,112 @@
 
 class Chat_model extends CI_Model {
 
-  /* =========================================
-     THREAD MANAGEMENT
-     ========================================= */
+  /* =========================
+     THREADS
+     ========================= */
 
-  // Ensure thread between admin and other user (customer / driver)
   public function ensure_thread($admin_id, $other_user_id)
   {
-    $admin_id      = (int)$admin_id;
+    $admin_id = (int)$admin_id;
     $other_user_id = (int)$other_user_id;
 
-    $row = $this->db
-      ->where('admin_id', $admin_id)
-      ->where('other_user_id', $other_user_id)
-      ->get('chat_threads')
-      ->row_array();
+    $row = $this->db->where([
+        'admin_id'      => $admin_id,
+        'other_user_id' => $other_user_id
+      ])->limit(1)->get('chat_threads')->row_array();
 
-    if ($row) {
-      return (int)$row['thread_id'];
-    }
+    if ($row) return (int)$row['thread_id'];
 
+    // INSERT thread
     $this->db->insert('chat_threads', [
       'admin_id'      => $admin_id,
       'other_user_id' => $other_user_id,
       'created_at'    => date('Y-m-d H:i:s')
     ]);
 
-    return $this->db->insert_id();
+    return (int)$this->db->insert_id();
   }
 
-  /* =========================================
-     ADMIN THREAD LISTING
-     ========================================= */
+  public function get_thread_by_pair($admin_id, $other_user_id)
+  {
+    return $this->db->where([
+        'admin_id'      => (int)$admin_id,
+        'other_user_id' => (int)$other_user_id
+      ])->limit(1)->get('chat_threads')->row_array();
+  }
 
-  public function list_customer_threads_for_admin($admin_id)
+  public function get_admin_threads($admin_id)
   {
     return $this->db
-      ->select('t.thread_id, u.user_id, u.name, u.status')
-      ->from('chat_threads t')
-      ->join('users u', 'u.user_id = t.other_user_id')
-      ->where('t.admin_id', (int)$admin_id)
-      ->where('u.role', 'customer')
-      ->order_by('t.thread_id', 'DESC')
-      ->get()
+      ->where('admin_id', (int)$admin_id)
+      ->order_by('thread_id', 'DESC')
+      ->get('chat_threads')
       ->result_array();
   }
 
-  public function list_driver_threads_for_admin($admin_id)
+  /* =========================
+     MESSAGES
+     ========================= */
+
+  public function insert_message($thread_id, $sender_id, $message)
   {
-    return $this->db
-      ->select('t.thread_id, u.user_id, u.name, u.status')
-      ->from('chat_threads t')
-      ->join('users u', 'u.user_id = t.other_user_id')
-      ->where('t.admin_id', (int)$admin_id)
-      ->where('u.role', 'driver')
-      ->order_by('t.thread_id', 'DESC')
-      ->get()
-      ->result_array();
-  }
+    $thread_id = (int)$thread_id;
+    $sender_id = (int)$sender_id;
+    $message   = trim($message);
 
-  /* =========================================
-     MESSAGE LISTING
-     ========================================= */
-
-  public function get_messages_admin($type, $admin_id, $other_user_id)
-  {
-    $thread_id = $this->ensure_thread($admin_id, $other_user_id);
-
-    return $this->db
-      ->select('m.*, u.name AS sender_name')
-      ->from('chat_messages m')
-      ->join('users u', 'u.user_id = m.sender_id')
-      ->where('m.thread_id', (int)$thread_id)
-      ->order_by('m.msg_id', 'ASC')
-      ->get()
-      ->result_array();
-  }
-
-  public function get_messages_for_other($other_user_id)
-  {
-    return $this->db
-      ->select('m.*, u.name AS sender_name')
-      ->from('chat_messages m')
-      ->join('chat_threads t', 't.thread_id = m.thread_id')
-      ->join('users u', 'u.user_id = m.sender_id')
-      ->where('t.other_user_id', (int)$other_user_id)
-      ->order_by('m.msg_id', 'ASC')
-      ->get()
-      ->result_array();
-  }
-
-  /* =========================================
-     SEND MESSAGES
-     ========================================= */
-
-  public function send_admin_message($type, $admin_id, $other_user_id, $message)
-  {
-    $thread_id = $this->ensure_thread($admin_id, $other_user_id);
+    if ($thread_id <= 0 || $sender_id <= 0 || $message === '') return 0;
 
     $this->db->insert('chat_messages', [
-      'thread_id' => (int)$thread_id,
-      'sender_id' => (int)$admin_id,
-      'message'   => $message,
-      'created_at'=> date('Y-m-d H:i:s')
+      'thread_id'   => $thread_id,
+      'sender_id'   => $sender_id,
+      'message'     => $message,
+      'created_at'  => date('Y-m-d H:i:s')
     ]);
 
-    return $this->db->insert_id();
+    return (int)$this->db->insert_id();
   }
 
-  public function send_other_message($admin_id, $other_user_id, $message)
+  public function get_messages($thread_id, $viewer_id)
   {
-    $thread_id = $this->ensure_thread($admin_id, $other_user_id);
+    $thread_id = (int)$thread_id;
+    $viewer_id = (int)$viewer_id;
 
-    $this->db->insert('chat_messages', [
-      'thread_id' => (int)$thread_id,
-      'sender_id' => (int)$other_user_id,
-      'message'   => $message,
-      'created_at'=> date('Y-m-d H:i:s')
-    ]);
+    $rows = $this->db
+      ->where('thread_id', $thread_id)
+      ->order_by('msg_id', 'ASC')
+      ->get('chat_messages')
+      ->result_array();
 
-    return $this->db->insert_id();
+    foreach ($rows as &$r) {
+      $r['is_me'] = ((int)$r['sender_id'] === $viewer_id);
+    }
+    return $rows;
   }
 
-  /* =========================================
-     COMMON UTILITIES
-     ========================================= */
-
-  public function get_user_name($user_id)
+  public function get_messages_since($thread_id, $viewer_id, $last_id)
   {
-    return $this->db
-      ->select('name')
-      ->where('user_id', (int)$user_id)
-      ->get('users')
-      ->row('name');
+    $thread_id = (int)$thread_id;
+    $viewer_id = (int)$viewer_id;
+    $last_id   = (int)$last_id;
+
+    $rows = $this->db
+      ->where('thread_id', $thread_id)
+      ->where('msg_id >', $last_id)
+      ->order_by('msg_id', 'ASC')
+      ->get('chat_messages')
+      ->result_array();
+
+    foreach ($rows as &$r) {
+      $r['is_me'] = ((int)$r['sender_id'] === $viewer_id);
+    }
+    return $rows;
+  }
+
+  public function get_last_msg_id($thread_id)
+  {
+    $row = $this->db->select('MAX(msg_id) AS mx')
+      ->where('thread_id', (int)$thread_id)
+      ->get('chat_messages')->row_array();
+    return (int)($row['mx'] ?? 0);
   }
 }

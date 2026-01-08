@@ -30,24 +30,54 @@ class Chat_model extends CI_Model {
 
   public function get_admin_threads_with_users($admin_id, $type)
   {
-    $admin_id = (int)$admin_id;
+      $admin_id = (int)$admin_id;
 
-    if ($type === 'customer') {
-      $this->db->join('customers c', 'c.customer_id = t.other_user_id');
-      $this->db->select('t.thread_id, c.customer_id AS user_id, c.name, c.phone');
-    } else {
-      $this->db->join('drivers d', 'd.driver_id = t.other_user_id');
-      $this->db->select('t.thread_id, d.driver_id AS user_id, d.name, d.phone');
-    }
+      $this->db->from('chat_threads t');
+      $this->db->join('users u', 'u.user_id = t.other_user_id');
+      $this->db->join(
+          'chat_messages m',
+          'm.thread_id = t.thread_id',
+          'left'
+      );
 
-    $this->db->select('MAX(m.created_at) AS last_msg_at', false);
-    $this->db->join('chat_messages m', 'm.thread_id = t.thread_id', 'left');
-    $this->db->from('chat_threads t');
-    $this->db->where('t.admin_id', $admin_id);
-    $this->db->group_by('t.thread_id');
-    $this->db->order_by('last_msg_at', 'DESC');
+      // COMMON SELECT
+      $this->db->select([
+          't.thread_id',
+          'u.user_id',
+          'u.name',
+          'u.role',
+          'MAX(m.created_at) AS last_msg_at'
+      ], false);
 
-    return $this->db->get()->result_array();
+      // ROLE-SPECIFIC JOIN & PHONE
+      if ($type === 'driver') {
+          $this->db->join(
+              'driver_profiles dp',
+              'dp.user_id = u.user_id',
+              'left'
+          );
+          $this->db->select('dp.phone');
+          $this->db->where('u.role', 'driver');
+      } else {
+          // customer
+          $this->db->join(
+              'customer_profiles cp',
+              'cp.user_id = u.user_id',
+              'left'
+          );
+          $this->db->select('cp.phone');
+          $this->db->where('u.role', 'customer');
+      }
+
+      // FILTERS
+      $this->db->where('t.admin_id', $admin_id);
+      $this->db->where('u.is_deleted', 0);
+
+      // GROUP & ORDER
+      $this->db->group_by('t.thread_id');
+      $this->db->order_by('last_msg_at', 'DESC');
+
+      return $this->db->get()->result_array();
   }
 
 

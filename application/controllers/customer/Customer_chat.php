@@ -23,13 +23,13 @@ class Customer_chat extends MY_Controller {
 
     // 2. Admin ID (single admin system OR first admin)
     // $admin_id = (int) $this->user->get_admin_id();
-    $admin_id = $row ? (int)$row['id'] : 0;
+    $admin_id = $row ? (int)$row['user_id'] : 0;
 
     // 3. Ensure chat thread exists
     $thread_id = $this->chat->ensure_thread($admin_id, $customer_id);
 
     // 4. Load messages
-    $data['messages'] = $this->chat->get_messages($thread_id);
+    $data['messages'] = $this->chat->get_messages_for_other($thread_id);
 
     $data['chat_with_name'] = 'Admin';
     $data['thread_id'] = $thread_id;

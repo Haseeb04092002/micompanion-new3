@@ -39,7 +39,7 @@
 
 
 <!-- GLOBAL PAGE LOADER -->
-<div id="pageLoader" class="page-loader d-none">
+<!-- <div id="pageLoader" class="page-loader d-none">
   <div class="loader-content text-center">
     <div class="spinner-border text-warning mb-3"
          role="status"
@@ -50,7 +50,7 @@
       Please wait...
     </div>
   </div>
-</div>
+</div> -->
 
 <script>
 (function () {

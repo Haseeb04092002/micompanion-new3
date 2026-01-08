@@ -1,5 +1,8 @@
-<?php include(APPPATH.'views/_partials/header.php'); ?>
-<?php $page_title=$chat_with_name; include(APPPATH.'views/_partials/topbar.php'); ?>
+<?php
+include(APPPATH.'views/_partials/header.php');
+$page_title=$chat_with_name; include(APPPATH.'views/_partials/topbar.php');
+$data['user_role'] = $this->session->userdata('role'); // admin|driver|customer
+?>
 
 <div class="container pb-5">
 
@@ -36,4 +39,19 @@
 
 </div>
 
-<?php include(APPPATH.'views/_partials/footer.php'); ?>
+<?php
+switch ($data['user_role']) {
+    case 'admin':
+        include(APPPATH.'views/_partials/bottom_admin.php');
+        break;
+
+    case 'driver':
+        include(APPPATH.'views/_partials/bottom_driver.php');
+        break;
+
+    case 'customer':
+        include(APPPATH.'views/_partials/bottom_customer.php');
+        break;
+}
+include(APPPATH.'views/_partials/footer.php');
+?>

@@ -14,8 +14,16 @@ class Customer_chat extends MY_Controller {
     // 1. Logged-in customer
     $customer_id = (int) $this->session->userdata('user_id');
 
+    $row = $this->db
+        ->select('id')
+        ->where('role', 'admin')
+        ->limit(1)
+        ->get('users')
+        ->row_array();
+
     // 2. Admin ID (single admin system OR first admin)
-    $admin_id = (int) $this->user->get_admin_id();
+    // $admin_id = (int) $this->user->get_admin_id();
+    $admin_id = (int)$row['id'];
 
     // 3. Ensure chat thread exists
     $thread_id = $this->chat->ensure_thread($admin_id, $customer_id);

@@ -1,46 +1,25 @@
-<?php include(APPPATH.'views/_partials/header.php'); ?>
-<?php $page_title="Chats"; include(APPPATH.'views/_partials/topbar.php'); ?>
+<?php
+include(APPPATH.'views/_partials/header.php');
+$page_title = "Chat Inbox";
+include(APPPATH.'views/_partials/topbar.php');
+?>
 
-<div class="container pb-4">
-
-  <!-- TABS -->
-  <ul class="nav nav-tabs mb-3">
-    <li class="nav-item">
-      <a class="nav-link active" data-bs-toggle="tab" href="#customers">
-        Customers
+<div class="container py-3">
+  <div class="list-group">
+    <?php foreach($threads as $t): ?>
+      <a class="list-group-item list-group-item-action"
+         href="<?= site_url('admin/admin_chat/with/'.$t['other_user_id']) ?>">
+        <div class="d-flex justify-content-between">
+          <div>
+            <strong>User #<?= (int)$t['other_user_id'] ?></strong>
+            <div class="small text-muted">Thread #<?= (int)$t['thread_id'] ?></div>
+          </div>
+          <div class="small text-muted">
+            <?= date('d-M H:i', strtotime($t['created_at'])) ?>
+          </div>
+        </div>
       </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-bs-toggle="tab" href="#drivers">
-        Drivers
-      </a>
-    </li>
-  </ul>
-
-  <div class="tab-content">
-
-    <!-- CUSTOMER THREADS -->
-    <div class="tab-pane fade show active" id="customers">
-      <?php foreach($customer_threads as $t): ?>
-        <a href="<?= site_url('admin/admin_chat/chat/customer/'.$t['user_id']) ?>"
-           class="card card-soft p-3 mb-2 text-decoration-none">
-          <div class="fw-bold"><?= htmlspecialchars($t['name']) ?></div>
-          <div class="small text-muted"><?= htmlspecialchars($t['last_message']) ?></div>
-        </a>
-      <?php endforeach; ?>
-    </div>
-
-    <!-- DRIVER THREADS -->
-    <div class="tab-pane fade" id="drivers">
-      <?php foreach($driver_threads as $t): ?>
-        <a href="<?= site_url('admin/admin_chat/chat/driver/'.$t['user_id']) ?>"
-           class="card card-soft p-3 mb-2 text-decoration-none">
-          <div class="fw-bold"><?= htmlspecialchars($t['name']) ?></div>
-          <div class="small text-muted"><?= htmlspecialchars($t['last_message']) ?></div>
-        </a>
-      <?php endforeach; ?>
-    </div>
-
+    <?php endforeach; ?>
   </div>
 </div>
 

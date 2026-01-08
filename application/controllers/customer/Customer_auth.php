@@ -49,6 +49,7 @@ class Customer_auth extends MY_Controller {
         $u = $this->auth->login('customer',$email,$pass);
         if($u){
           $this->session->set_userdata('customer_id',$u['user_id']);
+          $this->session->set_userdata('role','customer');
           redirect('customer/customer_dashboard');
         } else $data['err']='Invalid login.';
       }
@@ -58,6 +59,7 @@ class Customer_auth extends MY_Controller {
 
   public function logout(){
     $this->session->unset_userdata('customer_id');
+    $this->session->unset_userdata('role');
     redirect('customer/customer_auth/login');
   }
 }

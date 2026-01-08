@@ -21,6 +21,7 @@ class Admin_auth extends MY_Controller {
         $u = $this->auth->login('admin', $email, $pass);
         if($u){
           $this->session->set_userdata('admin_id', $u['user_id']);
+          $this->session->set_userdata('role','admin');
           $this->session->set_flashdata('ok','Welcome Admin!');
           redirect('admin/admin_dashboard');
         } else {
@@ -33,6 +34,7 @@ class Admin_auth extends MY_Controller {
 
   public function logout(){
     $this->session->unset_userdata('admin_id');
+    $this->session->unset_userdata('role');
     redirect('admin/admin_auth/login');
   }
 }

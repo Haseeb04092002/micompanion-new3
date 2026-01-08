@@ -6,7 +6,7 @@ class Customer_chat extends MY_Controller {
     parent::__construct();
     $this->load->model('Auth_model','auth');
     $this->load->model('User_model','user');
-    $this->load->model('Chat_model');
+    $this->load->model('Chat_model','chat');
   }
 
   public function index()

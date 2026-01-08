@@ -1,6 +1,6 @@
 <?php
 include(APPPATH.'views/_partials/header.php');
-$page_title = $chat_with_name;
+$page_title = "Chat with ".$chat_with_name;
 include(APPPATH.'views/_partials/topbar.php');
 
 $user_role = $this->session->userdata('role'); // admin|driver|customer

@@ -85,7 +85,7 @@ include(APPPATH.'views/_partials/topbar.php');
                 <div class="small text-muted">
                   <?= date('d-M h:i A', strtotime($t['last_msg_at'])) ?>
                 </div>
-                <a href="<?= site_url('admin/admin_chat/with/'.$t['user_id']) ?>"
+                <a href="<?= site_url('admin/admin_chat/with/'.$t['name']) ?>"
                    class="btn btn-sm btn-outline-warning mt-2">
                   Chat
                 </a>

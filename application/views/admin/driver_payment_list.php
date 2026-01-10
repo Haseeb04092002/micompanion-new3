@@ -23,6 +23,11 @@
       <hr>
 
       <?php if ($r['driver_payment_status']=='pending'): ?>
+        <a href="<?= site_url('admin/driver_easypaisa/pay/'.$booking_id) ?>"
+          class="btn btn-success btn-sm">
+          Pay via EasyPaisa
+        </a>
+
         <a href="<?= site_url('admin/driver_payments/pay/'.$r['booking_id']) ?>"
            class="btn btn-success btn-sm">Pay Driver</a>
       <?php else: ?>

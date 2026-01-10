@@ -395,6 +395,17 @@ $config['sess_regenerate_destroy'] = FALSE;
 $config['sess_expire_on_close'] = FALSE;
 
 
+
+$config['easypaisa'] = [
+    'store_id'   => 'YOUR_STORE_ID',
+    'hash_key'   => 'YOUR_HASH_KEY',
+    'account'    => 'YOUR_MERCHANT_ACCOUNT',
+    'init_url'   => 'https://easypaisa.com.pk/easypay/Index.jsf',
+    'confirm_url'=> 'https://easypaisa.com.pk/easypay/Confirm.jsf',
+    'callback'   => base_url('payments/easypaisa_callback'),
+];
+
+
 /*
 |--------------------------------------------------------------------------
 | Cookie Related Variables

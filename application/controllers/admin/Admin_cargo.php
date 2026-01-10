@@ -12,6 +12,38 @@ class Admin_cargo extends MY_Controller
     $this->load->model('Notification_model', 'noti');
   }
 
+  public function set_payment($cargo_id)
+  {
+      if (!$this->session->userdata('admin_id')) exit('Access denied');
+
+      $cargo = $this->db->where('cargo_id',$cargo_id)->get('cargos')->row_array();
+      if (!$cargo || $cargo['status'] !== 'delivered') exit('Invalid');
+
+      if ($_POST) {
+          $amount = (float)$this->input->post('payment_amount');
+
+          $this->db->where('cargo_id',$cargo_id)->update('cargos',[
+              'payment_amount' => $amount,
+              'payment_status' => 'pending'
+          ]);
+
+          // 🔔 notify customer
+          $this->db->insert('notifications',[
+              'user_id' => $cargo['customer_id'],
+              'title' => 'Payment Required',
+              'body' => 'Please pay Rs '.$amount.' for delivered cargo',
+              'ref_type' => 'cargo_payment',
+              'ref_id' => $cargo_id,
+              'created_at' => date('Y-m-d H:i:s')
+          ]);
+
+          redirect('admin/cargos');
+      }
+
+      $this->load->view('admin/cargo_payment_set',['cargo'=>$cargo]);
+  }
+
+
   public function view($booking_id)
   {
     $cargo = $this->cargo->get_full_by_id($booking_id);

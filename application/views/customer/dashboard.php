@@ -34,6 +34,19 @@
       </div>
     </div>
 
+    <?php if ($cargo['status']=='delivered' && $cargo['payment_status']=='pending'): ?>
+      <div class="alert alert-warning">
+        <strong>Payment Required</strong><br>
+        Amount: Rs <?= $cargo['payment_amount'] ?>
+
+        <a href="<?= site_url('customer/payment/'.$cargo['cargo_id']) ?>"
+          class="btn btn-sm btn-orange mt-2">
+          Pay Now
+        </a>
+      </div>
+    <?php endif; ?>
+
+
     <!-- RECENT BOOKINGS -->
     <div class="card card-soft p-3">
       <div class="fw-bold mb-2">Recent Bookings</div>

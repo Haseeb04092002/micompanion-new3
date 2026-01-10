@@ -13,6 +13,120 @@ class Customer_booking extends MY_Controller
     $this->load->model('Notification_model', 'noti');
   }
 
+  public function pay_cargo($booking_id = '')
+  {
+      // 🔐 customer must be logged in
+      $customer_id = (int)$this->session->userdata('customer_id');
+      if (!$customer_id) {
+          show_error('Unauthorized access');
+      }
+
+      $booking_id = (int)$booking_id;
+      if (!$booking_id) {
+          show_error('Invalid cargo');
+      }
+
+      // 🔍 fetch cargo
+      $cargo = $this->db
+          ->where('booking_id', $booking_id)
+          ->where('customer_id', $customer_id)
+          ->get('cargo_bookings')
+          ->row_array();
+
+      if (!$cargo) {
+          show_error('Cargo not found');
+      }
+
+      // 🚫 only delivered & unpaid cargos
+      if ($cargo['status'] !== 'delivered' || $cargo['payment_status'] === 'paid') {
+          show_error('Payment not allowed');
+      }
+
+      // 🔍 find admin (from assignment)
+      $assignment = $this->db
+          ->where('booking_id', $booking_id)
+          ->get('cargo_assignments')
+          ->row_array();
+
+      if (!$assignment) {
+          show_error('Admin not found');
+      }
+
+      $admin_id = (int)$assignment['admin_id'];
+
+      // 🧾 payment method
+      $method = $this->input->post('payment_method');
+
+      // =========================
+      // EASYPaisa PAYMENT
+      // =========================
+      if ($method === 'easypaisa') {
+
+          $ep_number = trim($this->input->post('ep_number'));
+          $ep_txn    = trim($this->input->post('ep_txn'));
+
+          if ($ep_number === '' || $ep_txn === '') {
+              show_error('Easypaisa details required');
+          }
+
+          $this->db->where('booking_id', $booking_id)->update('cargo_bookings', [
+              'payment_method' => 'easypaisa',
+              'payment_ref'    => $ep_txn,
+              'payment_status' => 'paid',
+              'paid_at'        => date('Y-m-d H:i:s')
+          ]);
+      }
+
+      // =========================
+      // MANUAL PAYMENT
+      // =========================
+      elseif ($method === 'manual') {
+
+          if (empty($_FILES['proof']['name'])) {
+              show_error('Payment proof required');
+          }
+
+          $dir = FCPATH . 'uploads/payments/';
+          if (!is_dir($dir)) {
+              mkdir($dir, 0777, true);
+          }
+
+          $ext = pathinfo($_FILES['proof']['name'], PATHINFO_EXTENSION);
+          $img = 'pay_'.$booking_id.'_'.time().'.'.$ext;
+
+          if (!move_uploaded_file($_FILES['proof']['tmp_name'], $dir.$img)) {
+              show_error('Upload failed');
+          }
+
+          $this->db->where('booking_id', $booking_id)->update('cargo_bookings', [
+              'payment_method' => 'manual',
+              'payment_proof'  => $img,
+              'payment_status' => 'paid',
+              'paid_at'        => date('Y-m-d H:i:s')
+          ]);
+      }
+
+      else {
+          show_error('Invalid payment method');
+      }
+
+      // 🔔 notify admin
+      $this->db->insert('notifications', [
+          'user_id'    => $admin_id,
+          'title'      => 'Payment Received',
+          'body'       => 'Payment submitted for Cargo #'.$booking_id,
+          'ref_type'   => 'cargo',
+          'ref_id'     => $booking_id,
+          'is_read'    => 0,
+          'created_at' => date('Y-m-d H:i:s')
+      ]);
+
+      // ✅ success
+      $this->session->set_flashdata('success', 'Payment submitted successfully');
+      redirect('customer/bookings');
+  }
+
+
   public function create()
   {
 

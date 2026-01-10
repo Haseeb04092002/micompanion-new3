@@ -401,8 +401,8 @@ $config['easypaisa'] = [
     'hash_key'   => 'YOUR_HASH_KEY',
     'account'    => 'YOUR_MERCHANT_ACCOUNT',
     'init_url'   => 'https://easypaisa.com.pk/easypay/Index.jsf',
-    'confirm_url'=> 'https://easypaisa.com.pk/easypay/Confirm.jsf',
-    'callback'   => base_url('payments/easypaisa_callback'),
+    'confirm_url'=> 'https://easypaisa.com.pk/easypay/Confirm.jsf'
+    // 'callback'   => base_url('payments/easypaisa_callback'),
 ];
 
 

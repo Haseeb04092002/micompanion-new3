@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <?php if ($cargo['status']=='delivered' && $cargo['payment_status']=='pending'): ?>
+    <!-- <?php if ($cargo['status']=='delivered' && $cargo['payment_status']=='pending'): ?>
       <div class="alert alert-warning">
         <strong>Payment Required</strong><br>
         Amount: Rs <?= $cargo['payment_amount'] ?>
@@ -44,7 +44,7 @@
           Pay Now
         </a>
       </div>
-    <?php endif; ?>
+    <?php endif; ?> -->
 
 
     <!-- RECENT BOOKINGS -->

@@ -2,7 +2,7 @@
    aramex PWA – Service Worker
    ========================================================= */
 
-const CACHE_VERSION = "aramex-v1.1.0";
+const CACHE_VERSION = "aramex-v2.2.0";
 const CACHE_NAME = `aramex-cache-${CACHE_VERSION}`;
 
 /* ---------------------------------------------------------
@@ -18,8 +18,8 @@ const STATIC_ASSETS = [
   /* JS */
 
   /* Icons */
-  "/assets/icons/icon-192x192.png",
-  "/assets/icons/icon-512x512.png"
+  "/assets/icons/icon-192x192.png?v=2",
+  "/assets/icons/icon-512x512.png?v=2"
 ];
 
 /* =========================================================

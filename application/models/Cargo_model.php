@@ -19,48 +19,96 @@ class Cargo_model extends CI_Model
     return $id;
   }
 
+  /* REQUESTED JOBS */
+  public function driver_requested_jobs($driver_id)
+  {
+    return $this->db
+      ->from('driver_job_requests r')
+      ->join('cargo_bookings b', 'b.booking_id=r.booking_id')
+      ->where('r.driver_id', $driver_id)
+      ->order_by('r.requested_at', 'DESC')
+      ->get()->result_array();
+  }
+
+  /* ALL OPEN JOBS */
+  public function all_open_jobs($driver_id)
+  {
+    return $this->db
+      ->from('cargo_bookings b')
+      ->where_not_in('b.status', ['cancelled'])
+      ->order_by('b.created_at', 'DESC')
+      ->get()->result_array();
+  }
+
+
   public function get_full_by_id($booking_id)
   {
     $booking_id = (int)$booking_id;
 
-    return $this->db
+    return
+
+      $this->db
       ->select("
-            b.*,
+          b.*,
 
-            /* Customer */
-            cu.name AS customer_name,
-            cp.phone AS customer_phone,
-            cp.cnic_no AS customer_cnic,
+          /* CUSTOMER */
+          cu.name AS customer_name,
+          cp.phone AS customer_phone,
+          cp.cnic_no AS customer_cnic,
 
-            /* Driver */
-            du.name AS driver_name,
-            dp.phone AS driver_phone,
-            dp.license_no AS driver_license_no,
+          /* DRIVER */
+          du.name AS driver_name,
+          dp.phone AS driver_phone,
+          dp.license_no AS driver_license_no,
+          dp.cnic_no AS driver_cnic,
 
-            /* Vehicle (by driver_id) */
-            v.category AS vehicle_category,
-            v.name AS vehicle_name,
-            v.model AS vehicle_model,
-            v.front_img AS vehicle_front_img,
-            v.back_img AS vehicle_back_img
-        ", false)
+          /* VEHICLE */
+          v.category AS vehicle_category,
+          v.name AS vehicle_name,
+          v.model AS vehicle_model,
+          v.front_img AS vehicle_front_img,
+          v.back_img AS vehicle_back_img
+      ", false)
+
       ->from('cargo_bookings b')
 
-      /* CUSTOMER */
-      ->join('users cu', 'cu.user_id = b.customer_id AND cu.is_deleted = 0', 'left')
-      ->join('customer_profiles cp', 'cp.user_id = b.customer_id', 'left')
-
-      /* DRIVER */
-      ->join('users du', 'du.user_id = b.driver_id AND du.is_deleted = 0', 'left')
-      ->join('driver_profiles dp', 'dp.user_id = b.driver_id', 'left')
-
-      /* VEHICLE (driver based, approved only) */
+      /* ASSIGNMENT (CONNECTS DRIVER & VEHICLE) */
       ->join(
-        'driver_vehicles v',
-        'v.driver_id = b.driver_id AND v.status = "approved" AND v.is_deleted = 0',
+        'cargo_assignments ca',
+        'ca.booking_id = b.booking_id',
         'left'
       )
 
+      /* CUSTOMER */
+      ->join(
+        'users cu',
+        'cu.user_id = b.customer_id AND cu.is_deleted = 0',
+        'left'
+      )
+      ->join(
+        'customer_profiles cp',
+        'cp.user_id = b.customer_id',
+        'left'
+      )
+
+      /* DRIVER */
+      ->join(
+        'users du',
+        'du.user_id = ca.driver_id AND du.is_deleted = 0',
+        'left'
+      )
+      ->join(
+        'driver_profiles dp',
+        'dp.user_id = ca.driver_id',
+        'left'
+      )
+
+      /* VEHICLE */
+      ->join(
+        'driver_vehicles v',
+        'v.vehicle_id = ca.vehicle_id AND v.status = "approved" AND v.is_deleted = 0',
+        'left'
+      )
       ->where('b.booking_id', $booking_id)
       ->get()
       ->row_array();

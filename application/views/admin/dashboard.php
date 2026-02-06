@@ -1,6 +1,5 @@
 <?php $title="Admin Dashboard"; include(APPPATH.'views/_partials/header.php'); ?>
 <?php $page_title="Admin Dashboard"; $logout_url="admin/admin_auth/logout"; include(APPPATH.'views/_partials/topbar.php'); ?>
-<?php include(APPPATH.'views/_partials/alerts.php'); ?>
 
 <div class="container pb-4">
   <div class="row g-3 px-2">

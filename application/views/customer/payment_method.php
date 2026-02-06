@@ -1,6 +1,5 @@
 <?php $title="Customer Dashboard"; include(APPPATH.'views/_partials/header.php'); ?>
 <?php $page_title="Customer Dashboard"; $logout_url="customer/customer_auth/logout"; include(APPPATH.'views/_partials/topbar.php'); ?>
-<?php include(APPPATH.'views/_partials/alerts.php'); ?>
 
 <div class="card">
   <div class="card-body">

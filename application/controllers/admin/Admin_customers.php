@@ -9,7 +9,7 @@ class Admin_customers extends MY_Controller
         if (!$this->session->userdata('admin_id')) redirect('admin/admin_auth/login');
         $this->load->model('Customer_model', 'cust');
         $this->load->model('Auth_model', 'auth');
-        $this->load->model('Notification_model', 'noti');
+        $this->load->model('Notification_model','nm');
     }
 
     public function index()
@@ -48,7 +48,18 @@ class Admin_customers extends MY_Controller
     public function approve($user_id)
     {
         $this->auth->set_status($user_id, 'approved');
-        $this->noti->add($user_id, 'Customer Approved', 'You can create cargo bookings now.', 'customer', $user_id);
+        $this->nm->create([
+            'sender_role' => 'customer',
+            'sender_id' => $user_id,
+            'receiver_role' => 'admin',
+            'receiver_id' => NULL,
+            'title' => 'Customer Approved',
+            'message' => 'Customer has been approved.',
+            'ref_type' => 'customer',
+            'ref_id' => $user_id,
+            'severity' => 'info',
+            'url' => site_url('admin/admin_customers/view/' . $user_id)
+        ]);
         $this->session->set_flashdata('ok', 'Customer approved.');
         redirect('admin/admin_customers');
     }
@@ -56,7 +67,18 @@ class Admin_customers extends MY_Controller
     public function reject($user_id)
     {
         $this->auth->set_status($user_id, 'rejected');
-        $this->noti->add($user_id, 'Customer Rejected', 'Your verification is rejected. Please update details.', 'customer', $user_id);
+        $this->nm->create([
+            'sender_role' => 'customer',
+            'sender_id' => $user_id,
+            'receiver_role' => 'admin',
+            'receiver_id' => NULL,
+            'title' => 'Customer Rejected',
+            'message' => 'Your verification is rejected. Please update details.',
+            'ref_type' => 'customer',
+            'ref_id' => $user_id,
+            'severity' => 'warning',
+            'url' => site_url('admin/admin_customers/view/' . $user_id)
+        ]);
         $this->session->set_flashdata('ok', 'Customer rejected.');
         redirect('admin/admin_customers');
     }
@@ -64,8 +86,19 @@ class Admin_customers extends MY_Controller
     public function suspend($user_id)
     {
         $this->auth->set_status($user_id, 'suspended');
-        $this->noti->add($user_id, 'Account Suspended', 'Your account has been suspended by admin.', 'customer', $user_id);
-        $this->session->set_flashdata('ok', 'Customer suspended.');
+        $this->nm->create([
+            'sender_role' => 'customer',
+            'sender_id' => $user_id,
+            'receiver_role' => 'admin',
+            'receiver_id' => NULL,
+            'title' => 'Customer Suspended',
+            'message' => 'Customer has been suspended.',
+            'ref_type' => 'customer',
+            'ref_id' => $user_id,
+            'severity' => 'error',
+            'url' => site_url('admin/admin_customers/view/' . $user_id)
+        ]);
+         $this->session->set_flashdata('ok', 'Customer suspended.');
         redirect('admin/admin_customers');
     }
 }

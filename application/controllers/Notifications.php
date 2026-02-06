@@ -1,49 +1,43 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Notifications extends MY_Controller {
+class Notifications extends CI_Controller
+{
+
+  public function __construct()
+  {
+    parent::__construct();
+    $this->load->model('Notification_model', 'nm');
+  }
+
+  private function user()
+  {
+    if ($this->session->userdata('admin_id'))
+      return ['admin', $this->session->userdata('admin_id')];
+
+    if ($this->session->userdata('driver_id'))
+      return ['driver', $this->session->userdata('driver_id')];
+
+    if ($this->session->userdata('customer_id'))
+      return ['customer', $this->session->userdata('customer_id')];
+
+    return [null, null];
+  }
 
   public function poll()
   {
-    $user_id = (int)$this->session->userdata('user_id');
-    if (!$user_id) exit;
+    list($role, $uid) = $this->user();
+    if (!$role) exit;
 
-    $last_id = (int)$this->input->get('last_id');
+    echo json_encode([
+      'unread' => $this->nm->unread_count($role, $uid),
+      'list' => $this->nm->get_for_user($role, $uid)
+    ]);
+  }
 
-    $this->db->where('user_id', $user_id);
-    $this->db->where('is_read', 0);
-    if ($last_id > 0) {
-      $this->db->where('noti_id >', $last_id);
-    }
-
-    $rows = $this->db
-      ->order_by('noti_id','ASC')
-      ->limit(5)
-      ->get('notifications')
-      ->result_array();
-
-    $data = [];
-    foreach ($rows as $r) {
-
-      // mark as read
-      $this->db->where('noti_id', $r['noti_id'])
-               ->update('notifications', ['is_read'=>1]);
-
-      $chat_url = '#';
-      if ($r['ref_type'] === 'chat') {
-        $chat_url = site_url('chat/open/'.$r['ref_id']);
-      }
-
-      $data[] = [
-        'noti_id' => $r['noti_id'],
-        'title'   => $r['title'],
-        'body'    => $r['body'],
-        'ref_type'=> $r['ref_type'],
-        'chat_url'=> $chat_url
-      ];
-    }
-
-    $this->output
-      ->set_content_type('application/json')
-      ->set_output(json_encode(['notifications'=>$data]));
+  public function mark_read($id)
+  {
+    list($role, $uid) = $this->user();
+    $this->nm->mark_read($id, $role, $uid);
+    echo json_encode(['ok' => 1]);
   }
 }

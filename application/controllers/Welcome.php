@@ -4,6 +4,19 @@ class Welcome extends CI_Controller {
 
   public function index()
   {
+    $this->load->view('splash');
+  }
+
+
+  public function about()
+  {
+    $this->load->view('admin/about');
+  }
+
+
+
+  public function login()
+  {
     // Admin already logged in
     if ($this->session->userdata('admin_id')) {
       redirect('admin/admin_dashboard');
@@ -20,10 +33,8 @@ class Welcome extends CI_Controller {
     }
 
     // No login → show role selection page
-    $this->load->view('welcome');
+    // $this->load->view('welcome');
+    redirect('customer/customer_auth/login');
   }
-  public function about()
-  {
-    $this->load->view('admin/about');
-  }
+  
 }

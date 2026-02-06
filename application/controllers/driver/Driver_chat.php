@@ -6,6 +6,7 @@ class Driver_chat extends MY_Controller {
     parent::__construct();
     $this->load->model('Chat_model','chat');
     $this->load->model('User_model','user');
+    $this->load->model('Notification_model','nm');
   }
 
   private function must_be_driver()
@@ -47,14 +48,18 @@ class Driver_chat extends MY_Controller {
     if (!$thread || (int)$thread['thread_id'] !== (int)$thread_id) exit("Invalid Thread");
 
     $this->chat->insert_message($thread_id, $driver_id, $message);
-
-    // 🔔 notify admin
-    $this->chat->create_chat_notification(
-        $admin_id,
-        'Driver',
-        $thread_id
-    );
-
+    $this->nm->create([
+      'sender_role' => 'driver',
+      'sender_id' => $driver_id,
+      'receiver_role' => 'admin',
+      'receiver_id' => NULL,
+      'title' => 'New Message',
+      'message' => $message,
+      'ref_type' => 'chat',
+      'ref_id' => $thread_id,
+      'severity' => 'info',
+      'url' => site_url('admin/admin_chat/with/' . $driver_id)
+    ]);
     redirect('driver/driver_chat');
   }
 

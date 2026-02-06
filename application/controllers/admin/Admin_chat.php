@@ -1,11 +1,14 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Admin_chat extends MY_Controller {
+class Admin_chat extends MY_Controller
+{
 
-  public function __construct(){
+  public function __construct()
+  {
     parent::__construct();
-    $this->load->model('Chat_model','chat');
-    $this->load->model('User_model','user');
+    $this->load->model('Chat_model', 'chat');
+    $this->load->model('User_model', 'user');
+    $this->load->model('Notification_model','nm');
   }
 
   private function must_be_admin()
@@ -35,13 +38,13 @@ class Admin_chat extends MY_Controller {
 
     $data = [];
     $data['thread_id']      = $thread_id;
-    $data['chat_with_name'] = 'User #'.$other_user_id; // replace with real name if you have
+    $data['chat_with_name'] = 'User #' . $other_user_id; // replace with real name if you have
     $data['viewer_id']      = $admin_id;
     $data['messages']       = $this->chat->get_messages($thread_id, $admin_id);
     $data['last_id']        = $this->chat->get_last_msg_id($thread_id);
 
-    $data['fetch_url']      = site_url('admin/admin_chat/fetch/'.$thread_id);
-    $data['send_url']       = site_url('admin/admin_chat/send/'.$thread_id);
+    $data['fetch_url']      = site_url('admin/admin_chat/fetch/' . $thread_id);
+    $data['send_url']       = site_url('admin/admin_chat/send/' . $thread_id);
 
     $this->load->view('chat/chat_box', $data);
   }
@@ -54,20 +57,25 @@ class Admin_chat extends MY_Controller {
     $message = $this->input->post('message', true);
 
     // Validate thread belongs to this admin
-    $t = $this->db->where(['thread_id'=>(int)$thread_id, 'admin_id'=>$admin_id])
+    $t = $this->db->where(['thread_id' => (int)$thread_id, 'admin_id' => $admin_id])
       ->limit(1)->get('chat_threads')->row_array();
     if (!$t) exit("Invalid Thread");
 
     $this->chat->insert_message($thread_id, $admin_id, $message);
+    $this->nm->create([
+      'sender_role' => 'customer',
+      'sender_id' => $t['other_user_id'],
+      'receiver_role' => 'admin',
+      'receiver_id' => NULL,
+      'title' => 'New Message',
+      'message' => $message,
+      'ref_type' => 'chat',
+      'ref_id' => $thread_id,
+      'severity' => 'info',
+      'url' => site_url('admin/admin_chat/with/' . $t['other_user_id'])
+    ]);
 
-    // 🔔 notify customer or driver
-    $this->chat->create_chat_notification(
-        $t['other_user_id'],
-        'Admin',
-        $thread_id
-    );
-
-    redirect('admin/admin_chat/with/'.$t['other_user_id']);
+    redirect('admin/admin_chat/with/' . $t['other_user_id']);
   }
 
   public function fetch($thread_id)
@@ -78,13 +86,13 @@ class Admin_chat extends MY_Controller {
     $last_id = (int)$this->input->get('last_id');
 
     // Validate thread belongs to this admin
-    $t = $this->db->where(['thread_id'=>(int)$thread_id, 'admin_id'=>$admin_id])
+    $t = $this->db->where(['thread_id' => (int)$thread_id, 'admin_id' => $admin_id])
       ->limit(1)->get('chat_threads')->row_array();
     if (!$t) exit;
 
     $new = $this->chat->get_messages_since($thread_id, $admin_id, $last_id);
 
-    $html = $this->load->view('chat/_messages', ['messages'=>$new], true);
+    $html = $this->load->view('chat/_messages', ['messages' => $new], true);
     $new_last_id = $last_id;
     foreach ($new as $m) $new_last_id = (int)$m['msg_id'];
 

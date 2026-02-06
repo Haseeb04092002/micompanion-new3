@@ -15,7 +15,7 @@
     Jobs
   </a>
 
-  <a href="<?= site_url('driver/driver_notifications') ?>" class="text-light">
+  <!-- <a href="<?= site_url('driver/driver_notifications') ?>" class="text-light">
     <i class="bi bi-bell"></i>
     Alerts
   </a>
@@ -23,6 +23,6 @@
   <a href="<?= site_url('driver/driver_auth/logout') ?>" class="text-light">
     <i class="bi bi-box-arrow-right"></i>
     Logout
-  </a>
+  </a> -->
 
 </div>

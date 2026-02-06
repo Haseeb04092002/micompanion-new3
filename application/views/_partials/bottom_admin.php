@@ -22,9 +22,9 @@
     Cargo
   </a>
 
-  <a href="<?= site_url('admin/admin_notifications') ?>" class="text-light">
+  <!-- <a href="<?= site_url('admin/admin_notifications') ?>" class="text-light">
     <i class="bi bi-bell"></i>
     Alerts
-  </a>
+  </a> -->
 
 </div>

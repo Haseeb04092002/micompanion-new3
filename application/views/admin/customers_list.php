@@ -2,7 +2,6 @@
 <?php $page_title = "Customers";
 $logout_url = "admin/admin_auth/logout";
 include(APPPATH . 'views/_partials/topbar.php'); ?>
-<?php include(APPPATH . 'views/_partials/alerts.php'); ?>
 
 <div class="container pb-4">
   <input class="form-control mb-3" id="q" placeholder="Search customer..." onkeyup="f()">

@@ -15,7 +15,7 @@
     My Cargo
   </a>
 
-  <a href="<?= site_url('customer/customer_notifications') ?>" class="text-light">
+  <!-- <a href="<?= site_url('customer/customer_notifications') ?>" class="text-light">
     <i class="bi bi-bell"></i>
     Alerts
   </a>
@@ -23,6 +23,6 @@
   <a href="<?= site_url('customer/customer_auth/logout') ?>" class="text-light">
     <i class="bi bi-box-arrow-right"></i>
     Logout
-  </a>
+  </a> -->
 
 </div>

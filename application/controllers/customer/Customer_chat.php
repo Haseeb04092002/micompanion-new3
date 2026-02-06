@@ -1,11 +1,14 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Customer_chat extends MY_Controller {
+class Customer_chat extends MY_Controller
+{
 
-  public function __construct(){
+  public function __construct()
+  {
     parent::__construct();
-    $this->load->model('Chat_model','chat');
-    $this->load->model('User_model','user');
+    $this->load->model('Chat_model', 'chat');
+    $this->load->model('User_model', 'user');
+    $this->load->model('Notification_model', 'nm');
   }
 
   private function must_be_customer()
@@ -32,8 +35,8 @@ class Customer_chat extends MY_Controller {
     $data['messages']       = $this->chat->get_messages($thread_id, $customer_id);
     $data['last_id']        = $this->chat->get_last_msg_id($thread_id);
 
-    $data['fetch_url']      = site_url('customer/customer_chat/fetch/'.$thread_id);
-    $data['send_url']       = site_url('customer/customer_chat/send/'.$thread_id);
+    $data['fetch_url']      = site_url('customer/customer_chat/fetch/' . $thread_id);
+    $data['send_url']       = site_url('customer/customer_chat/send/' . $thread_id);
 
     $this->load->view('chat/chat_box', $data);
   }
@@ -51,12 +54,18 @@ class Customer_chat extends MY_Controller {
     if (!$thread || (int)$thread['thread_id'] !== (int)$thread_id) exit("Invalid Thread");
 
     $this->chat->insert_message($thread_id, $customer_id, $message);
-    // 🔔 notify admin
-    $this->chat->create_chat_notification(
-        $admin_id,
-        'Customer',
-        $thread_id
-    );
+    $this->nm->create([
+      'sender_role' => 'customer',
+      'sender_id' => $customer_id,
+      'receiver_role' => 'admin',
+      'receiver_id' => NULL,
+      'title' => 'New Message',
+      'message' => $message,
+      'ref_type' => 'chat',
+      'ref_id' => $thread_id,
+      'severity' => 'info',
+      'url' => site_url('admin/admin_chat/with/' . $customer_id)
+    ]);
 
     redirect('customer/customer_chat');
   }
@@ -75,7 +84,7 @@ class Customer_chat extends MY_Controller {
 
     $new = $this->chat->get_messages_since($thread_id, $customer_id, $last_id);
 
-    $html = $this->load->view('chat/_messages', ['messages'=>$new], true);
+    $html = $this->load->view('chat/_messages', ['messages' => $new], true);
     $new_last_id = $last_id;
     foreach ($new as $m) $new_last_id = (int)$m['msg_id'];
 

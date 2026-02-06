@@ -1,27 +1,68 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Notification_model extends CI_Model {
+class Notification_model extends CI_Model
+{
 
-  public function add($user_id, $title, $body, $ref_type='', $ref_id=0) {
-    $this->db->insert('notifications', [
-      'user_id'=>(int)$user_id,
-      'title'=>$title,
-      'body'=>$body,
-      'ref_type'=>$ref_type,
-      'ref_id'=>(int)$ref_id,
-      'is_read'=>0,
-      'created_at'=>date('Y-m-d H:i:s')
-    ]);
+  public function create($data)
+  {
+    $this->db->insert('notifications', $data);
     return $this->db->insert_id();
   }
 
-  public function list_for_user($user_id) {
-    $this->db->order_by('noti_id','DESC');
-    return $this->db->get_where('notifications', ['user_id'=>(int)$user_id])->result_array();
+  public function get_for_user($role, $user_id)
+  {
+    $sql = "
+      SELECT n.*, IFNULL(r.is_read,0) AS is_read
+      FROM notifications n
+      LEFT JOIN notification_reads r
+        ON r.notification_id = n.id
+       AND r.user_role = ?
+       AND r.user_id = ?
+      WHERE n.receiver_role = ?
+        AND (n.receiver_id IS NULL OR n.receiver_id = ?)
+      ORDER BY n.id DESC
+      LIMIT 20
+    ";
+    return $this->db->query($sql, [$role, $user_id, $role, $user_id])->result_array();
   }
 
-  public function mark_read($noti_id, $user_id) {
-    $this->db->where(['noti_id'=>(int)$noti_id,'user_id'=>(int)$user_id])->update('notifications',['is_read'=>1]);
-    return true;
+  public function unread_count($role, $user_id)
+  {
+    $sql = "
+      SELECT COUNT(*) c
+      FROM notifications n
+      LEFT JOIN notification_reads r
+        ON r.notification_id = n.id
+       AND r.user_role = ?
+       AND r.user_id = ?
+      WHERE n.receiver_role = ?
+        AND (n.receiver_id IS NULL OR n.receiver_id = ?)
+        AND IFNULL(r.is_read,0)=0
+    ";
+    return (int)$this->db->query($sql, [$role, $user_id, $role, $user_id])->row()->c;
+  }
+
+  public function mark_read($notif_id, $role, $user_id)
+  {
+    $row = $this->db->get_where('notification_reads', [
+      'notification_id' => $notif_id,
+      'user_role' => $role,
+      'user_id' => $user_id
+    ])->row();
+
+    if ($row) {
+      $this->db->where('id', $row->id)->update('notification_reads', [
+        'is_read' => 1,
+        'read_at' => date('Y-m-d H:i:s')
+      ]);
+    } else {
+      $this->db->insert('notification_reads', [
+        'notification_id' => $notif_id,
+        'user_role' => $role,
+        'user_id' => $user_id,
+        'is_read' => 1,
+        'read_at' => date('Y-m-d H:i:s')
+      ]);
+    }
   }
 }

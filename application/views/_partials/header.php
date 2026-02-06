@@ -53,8 +53,8 @@
   <meta name="apple-mobile-web-app-title" content="Aramex Cargo">
 
   <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" sizes="192x192" href="<?= base_url('assets/icons/icon-192x192.png') ?>">
-  <link rel="apple-touch-icon" sizes="512x512" href="<?= base_url('assets/icons/icon-512x512.png') ?>">
+  <link rel="apple-touch-icon" sizes="192x192" href="https://companion.itimium.com.pk/assets/icons/icon-192x192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="https://companion.itimium.com.pk/assets/icons/icon-512x512.png">
 
   <!-- =========================
        OPEN GRAPH (FACEBOOK / WHATSAPP)
@@ -62,7 +62,7 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Aramex – Cargo Delivery & Logistics Management">
   <meta property="og:description" content="Smart cargo delivery and logistics platform for customers, drivers, and admins. Real-time tracking, document approval, and payments.">
-  <meta property="og:image" content="<?= base_url('assets/images/og-image.png') ?>">
+  <meta property="og:image" content="https://companion.itimium.com.pk/assets/images/og-image.png">
   <meta property="og:url" content="<?= base_url() ?>">
   <meta property="og:site_name" content="Aramex Cargo">
 
@@ -72,13 +72,13 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Aramex – Cargo Delivery & Logistics Management">
   <meta name="twitter:description" content="Manage cargo, drivers, documents, and deliveries with Aramex logistics platform.">
-  <meta name="twitter:image" content="<?= base_url('assets/images/og-image.png') ?>">
+  <meta name="twitter:image" content="https://companion.itimium.com.pk/assets/images/og-image.png">
 
   <!-- =========================
        ICONS & STYLES
   ========================== -->
-  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/icons/favicon-32x32.png') ?>">
-  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/icons/favicon-16x16.png') ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://companion.itimium.com.pk/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://companion.itimium.com.pk/assets/icons/favicon-16x16.png">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">

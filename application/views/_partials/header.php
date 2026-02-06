@@ -14,7 +14,7 @@
   <!-- =========================
        PRIMARY SEO (VERY IMPORTANT)
   ========================== -->
-  <title><?= isset($title) ? $title . ' | Aramex Cargo' : 'Aramex – Cargo Delivery & Logistics Management' ?></title>
+  <title>Aramex Cargo : Aramex – Cargo Delivery & Logistics Management</title>
 
   <meta name="description" content="Aramex is a smart cargo delivery and logistics management platform for customers, drivers, and administrators. Track shipments, manage drivers, handle documents, payments, and deliveries in real time.">
 

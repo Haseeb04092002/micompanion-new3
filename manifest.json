@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "MiCompanion – Cargo & Logistics Management",
-  "short_name": "MiCompanion",
-  "description": "MiCompanion is a smart cargo and logistics management PWA for customers, drivers, and admins. Book cargo, manage vehicles, assign drivers, track deliveries, and monitor shipments in real time.",
+  "name": "aramex – Cargo & Logistics Management",
+  "short_name": "aramex",
+  "description": "aramex is a smart cargo and logistics management PWA for customers, drivers, and admins. Book cargo, manage vehicles, assign drivers, track deliveries, and monitor shipments in real time.",
   
   "start_url": "/?source=pwa",
   "scope": "/",

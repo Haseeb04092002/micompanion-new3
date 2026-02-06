@@ -1,9 +1,9 @@
 /* =========================================================
-   MiCompanion PWA – Service Worker
+   aramex PWA – Service Worker
    ========================================================= */
 
-const CACHE_VERSION = "micompanion-v1.1.0";
-const CACHE_NAME = `micompanion-cache-${CACHE_VERSION}`;
+const CACHE_VERSION = "aramex-v1.1.0";
+const CACHE_NAME = `aramex-cache-${CACHE_VERSION}`;
 
 /* ---------------------------------------------------------
    FILES TO PRE-CACHE (STATIC ONLY)

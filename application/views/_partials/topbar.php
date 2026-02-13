@@ -10,7 +10,7 @@ if ($this->session->userdata('admin_id')) {
   $role_label = 'Customer';
 }
 $user_role = $this->session->userdata('role');
-$logout_url = '';
+$logout_url = 'customer/Customer_auth/logout';
 // 🔹 BOTTOM NAVIGATION
 switch ($user_role) {
   case 'admin':
@@ -210,7 +210,7 @@ switch ($user_role) {
 </div>
 
 <!-- OFFCANVAS MENU -->
-<div class="offcanvas offcanvas-start"
+<div class="offcanvas offcanvas-start w-75"
   tabindex="-1"
   id="appMenu"
   aria-labelledby="appMenuLabel">
@@ -222,7 +222,7 @@ switch ($user_role) {
     <h5 class="offcanvas-title ps-2 fs-3"
       id="appMenuLabel"
       style="color:var(--orange)">
-       aramex
+      aramex
     </h5>
     <button type="button"
       class="btn-close"
@@ -250,12 +250,10 @@ switch ($user_role) {
       <i class="bi bi-whatsapp fs-5"></i> Chat on WhatsApp
     </a>
 
-    <?php if (isset($logout_url)): ?>
-      <a class="d-flex align-items-center gap-3 px-3 py-3 border-bottom text-decoration-none"
-        href="<?= site_url($logout_url) ?>">
-        <i class="bi bi-box-arrow-left fs-5"></i> Logout
-      </a>
-    <?php endif; ?>
+    <a class="d-flex align-items-center gap-3 px-3 py-3 border-bottom text-decoration-none"
+      href="<?= site_url($logout_url) ?>">
+      <i class="bi bi-box-arrow-left fs-5"></i> Logout
+    </a>
 
     <a type="button" class="d-flex align-items-center gap-3 px-3 py-3 border-bottom text-decoration-none"
       onclick="forceUpdateApp()">
@@ -328,6 +326,4 @@ switch ($user_role) {
 
   setInterval(loadNotifications, 2000);
   loadNotifications();
-
-
 </script>
